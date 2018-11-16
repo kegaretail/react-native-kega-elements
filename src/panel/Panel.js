@@ -105,8 +105,8 @@ Panel.defaultProps = {
 
 const style = StyleSheet.create({
     
-
 	panel: {
+		flex: 0,
 		margin: 0,
 		elevation: 2,
 		borderRadius: 8,
