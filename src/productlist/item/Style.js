@@ -27,7 +27,7 @@ const style = StyleSheet.create({
 
 	},
 
-	price: {
+	subline: {
 		color: '#666666'
 	},
 

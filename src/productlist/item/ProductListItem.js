@@ -63,7 +63,7 @@ class ProductListItem extends Component {
     renderImage = (image) => {
 
         if (image) {
-            return <Image style={{height:'100%'}} resizeMode="contain" source={image}/>
+            return <Image style={{width: 50, height: 50}} resizeMode="contain" source={image}/>
         } else {
             return <Icon name="image" size={30} color="#DEDEDE" />;
         }
@@ -106,7 +106,9 @@ class ProductListItem extends Component {
 
     render() {
 
-        const { image, name, subline } = this.props;
+        const { image, name, subline, styles } = this.props;
+
+
 
         return (
             <Animated.View style={[style.container, {backgroundColor: this.bg_color_animation }]}>
@@ -116,8 +118,8 @@ class ProductListItem extends Component {
                 </View>
 
                 <View style={style.info}>
-                    <Text style={style.name}>{ name }</Text>
-                    <Text style={style.price}>{ subline }</Text>
+                    <Text style={[style.name, (styles && styles.name)]}>{ name }</Text>
+                    <Text style={[style.subline, (styles && styles.subline)]}>{ subline }</Text>
                 </View>
                 {
                     this.renderCounter()
@@ -136,12 +138,14 @@ ProductListItem.propTypes = {
     onClosed: PropTypes.func,
     disable_counter: PropTypes.bool,
     counter: PropTypes.object,
+    styles: PropTypes.object
 }
 
 ProductListItem.defaultProps = {
     onChange: null,
     disable_counter: false,
-    counter: null
+    counter: null,
+    styles: {}
 };
 
 export default ProductListItem;
