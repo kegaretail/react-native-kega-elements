@@ -11,9 +11,14 @@ import {
 
 import Touchable            from './Touchable';
 
+import { ThemeContext }     from '../Theme';
+
 class Button extends Component {
 
     render() {
+
+        console.log(this.context);
+        
         const { 
             type, label, labelStyle, disabled, raised, borderRadius, ripple, rippleColor, icon, 
             iconRight, onPress, ViewComponent = View, gradientProps, full, style: prop_style 
@@ -149,6 +154,8 @@ class Button extends Component {
     }
 
 }
+
+Button.contextType = ThemeContext;
 
 Button.propTypes = {
     type: PropTypes.oneOf(['contained', 'outlined', 'text']),
