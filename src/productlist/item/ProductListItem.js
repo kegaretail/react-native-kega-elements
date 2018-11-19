@@ -4,7 +4,8 @@ import PropTypes            from 'prop-types';
 import {
     View,
     Text,
-    Animated
+    Animated,
+    Image
 }                           from 'react-native';
 
 import Icon                 from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -60,7 +61,13 @@ class ProductListItem extends Component {
     }
 
     renderImage = (image) => {
-        return <Icon name="image" size={30} color="#DEDEDE" />;
+
+        if (image) {
+            return <Image style={{height:'100%'}} resizeMode="contain" source={image}/>
+        } else {
+            return <Icon name="image" size={30} color="#DEDEDE" />;
+        }
+
     }
 
     renderCounter = () => {

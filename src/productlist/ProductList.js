@@ -16,7 +16,7 @@ class ProductList extends Component {
 
         return (
             <FlatList
-                style={{flex:0, width: '100%', backgroundColor:'#e0e'}}
+                style={{width: '100%'}}
                 data={ products }
                 renderItem={ renderItem }
                 keyExtractor={ keyExtractor }

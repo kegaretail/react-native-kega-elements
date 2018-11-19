@@ -15,7 +15,8 @@ const style = StyleSheet.create({
 		position: 'relative',
 		width: 80,
 		alignItems: 'center', 
-		justifyContent: 'center'
+		justifyContent: 'center',
+		padding: 14
 	},
 
 	name: {

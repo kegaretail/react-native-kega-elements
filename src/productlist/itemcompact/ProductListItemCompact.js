@@ -6,16 +6,14 @@ import {
     Text
 }                           from 'react-native';
 
-
 import style                from './Style';
 
 class ProductListItemCompact extends Component {
 
-    renderProduct(data, parent) {
-        const { retour } = this.props;
-        const { quantity, description, netAmount, unitPrice } = data;
-
-        let product_amount = (retour ? -(netAmount) : netAmount );
+    renderProduct() {
+        const { children, name, unitPrice, amount, quantity } = this.props;
+  
+        const parent = (children && children.length > 0);
  
         return(
             <React.Fragment>
@@ -24,7 +22,7 @@ class ProductListItemCompact extends Component {
                 </View>
 
                 <View style={ style.description }>
-                    <Text ellipsizeMode="tail" numberOfLines={1} style={ [style.description_text, (parent ? style.parent : {})] }>{ description }</Text>
+                    <Text ellipsizeMode="tail" numberOfLines={1} style={ [style.description_text, (parent ? style.parent : {})] }>{ name }</Text>
                 </View>
 
                 <View style={ style.unit_price }>
@@ -32,7 +30,7 @@ class ProductListItemCompact extends Component {
                 </View>
 
                 <View style={ style.amount }>
-                    <Text style={ [style.amount_text, (parent ? style.parent : {})] }>{ product_amount }</Text>
+                    <Text style={ [style.amount_text, (parent ? style.parent : {})] }>{ amount }</Text>
                 </View>
 
                 <View style={style.action}></View>
@@ -40,49 +38,15 @@ class ProductListItemCompact extends Component {
         );
     }
 
-    renderChildren() {
-        const { data, renderChildren, renderChildrenReasonCode } = this.props;
-
-        if (!renderChildren || data.deliveryItems == undefined || data.deliveryItems.length == 0) { return null; }
-
-        const children = data.deliveryItems.map((product, index) => {
-            return (
-                <View style={ style.container } key={index}>
-                    { this.renderProduct(product) }
-                </View>
-            )
-        });
-
-        return (
-            <View style={ style.children } >
-                { children }
-            </View>
-        );
-     
-    }
-
     render() {
-        const { data, renderChildren, renderChildrenReasonCode } = this.props;
-
-        let children = renderChildren;
-        if (renderChildren && renderChildrenReasonCode != null && data.reasonCodeReference != renderChildrenReasonCode) {
-            children = false;
-        }
+        const { children } = this.props;
 
         return (
-            <View>
+            <View >
                 <View style={ style.container }>
-                    { this.renderProduct(data, children) }
+                    { this.renderProduct() }
                 </View>
-
-                { 
-                    children
-                    ?
-                        this.renderChildren() 
-                    :
-                        null
-                }
-                
+                {  children }
             </View>
         );
     }
@@ -90,17 +54,19 @@ class ProductListItemCompact extends Component {
 }
 
 ProductListItemCompact.propTypes = {
-    data: PropTypes.object,
-    retour: PropTypes.bool,
-    renderChildren: PropTypes.bool,
-    renderChildrenReasonCode: PropTypes.number,
+    name: PropTypes.string,
+    quantity: PropTypes.number,
+    amount: PropTypes.number,
+    unitPrice: PropTypes.number,
+    data: PropTypes.object
 }
 
 ProductListItemCompact.defaultProps = {
+    name: '',
+    quantity: 0,
+    amount:0,
+    unitPrice:0,
     data: {},
-    retour: false,
-    renderChildren: false,
-    renderChildrenReasonCode: null
 };
 
 export default ProductListItemCompact;
