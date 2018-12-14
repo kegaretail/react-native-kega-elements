@@ -12,6 +12,12 @@ import ProductList			from './src/productlist/ProductList';
 import ProductListItem		from './src/productlist/item/ProductListItem';
 import ProductListItemCompact	from './src/productlist/itemcompact/ProductListItemCompact';
 
+
+import {
+    Theme,
+    ThemeContext
+}                           from './src/Theme';
+
 export { 
     Panel,
     Button,
@@ -27,4 +33,6 @@ export {
     ProductListItem,
     ProductListItemCompact,
 
+    Theme,
+    ThemeContext
 };
