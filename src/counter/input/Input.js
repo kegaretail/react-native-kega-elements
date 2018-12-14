@@ -5,7 +5,7 @@ import {
     View, 
     TextInput,
     Text,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback 
 }                           from 'react-native';
 
 import style                from "./Style";
@@ -20,17 +20,26 @@ class Input extends Component {
     
     static getDerivedStateFromProps(nextProps, prevState) {
         const { value } = nextProps;
+        const { text } = prevState;
 
         return {
             ...prevState,
-            text: value
+            text: (value != text ? value : text)
         };
         
     }
-    
+ 
+    shouldComponentUpdate(nextProps, nextState) {
+
+        if (this.props.editable != nextProps.editable) { return true; }
+        if (this.state.text != nextState.text) { return true; }
+
+        return false;
+    }
+
+
     onChangeText = (text) => {
         this.setState({text});
-
         this.props.onChangeText(text);
     }
 
@@ -48,6 +57,10 @@ class Input extends Component {
 
         const { autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, small, onTouchStart, editable, onPress, onBlur, selectTextOnFocus, maxLength, style: props_style, showmax, max, disabled } = this.props;
         const { text } = this.state;
+
+        
+        console.log('[Input] render +++++++++++++++++++++++++++++++ ' + text);
+
 
         let container_style = [style.container];
         if (small) {
