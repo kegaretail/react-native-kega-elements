@@ -58,10 +58,6 @@ class Input extends Component {
         const { autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, small, onTouchStart, editable, onPress, onBlur, selectTextOnFocus, maxLength, style: props_style, showmax, max, disabled } = this.props;
         const { text } = this.state;
 
-        
-        console.log('[Input] render +++++++++++++++++++++++++++++++ ' + text);
-
-
         let container_style = [style.container];
         if (small) {
             container_style.push(style.container_small);

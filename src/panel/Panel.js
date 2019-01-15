@@ -72,7 +72,6 @@ class Panel extends Component {
 }
 
 Panel.propTypes = {
-	padding: PropTypes.number,
 	style: PropTypes.oneOfType([
 		PropTypes.object,
 		PropTypes.array,
@@ -90,7 +89,6 @@ Panel.propTypes = {
 };
 
 Panel.defaultProps = { 
-	padding: 15,
 	style: {},
 	content_style: {},
 	onPress: null,
