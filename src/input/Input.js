@@ -36,6 +36,18 @@ class Input extends Component {
         
     }
     */
+
+   shouldComponentUpdate(nextProps) {
+
+        if (nextProps.value != this.props.value) {
+            this.setState({
+                text: nextProps.value,
+                error: false
+            });
+        }
+
+        return true;
+    }
     
     onChangeText = (text) => {
 
@@ -111,8 +123,19 @@ class Input extends Component {
         }
   
         let input_style = [style.input];
-        if (props_style && props_style.height) {
-            input_style.push({height: (props_style.height-20), textAlignVertical: 'top'});
+        if (props_style) {
+            if (props_style.height) {
+                input_style.push({height: (props_style.height-20), textAlignVertical: 'top'});
+            }
+
+            if (props_style.fontSize) {
+                input_style.push({fontSize: props_style.fontSize});
+            }
+
+            if (props_style.color) {
+                input_style.push({fontSize: props_style.color});
+            }
+
         }
 
         let optional_props = {}
@@ -197,7 +220,6 @@ Input.propTypes = {
     error: PropTypes.bool,
     error_message: PropTypes.string,
     error_message_color: PropTypes.string,
-    tintColor: PropTypes.string,
     multiline: PropTypes.bool,
     maxLength: PropTypes.number,
     raised: PropTypes.bool,
@@ -212,7 +234,6 @@ Input.defaultProps = {
     label: '',
     label_style: {},
     selectionColor: '#000',
-    tintColor: '#57004e',
     returnKeyType: 'done',
     onChangeText: (text) => {},
     onSubmitEditing: () => {},
