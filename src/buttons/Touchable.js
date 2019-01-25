@@ -9,21 +9,30 @@ import {
 
 class Touchable extends Component {
 
+    onPress = () => {
+        const { onPress } = this.props;
+
+        requestAnimationFrame(() => {
+            onPress();
+        });
+
+    }
+
     render() {
 
-        const { color, borderless, children, useForeground, disabled, ripple } = this.props;
+        const { color, borderless, children, useForeground, disabled, ripple, onPress, ...rest } = this.props;
 
         if (ripple && Platform.OS === 'android' && Platform.Version >= 21) {
 
             return (
-                <TouchableNativeFeedback {...this.props} background={TouchableNativeFeedback.Ripple(color, borderless)} useForeground={useForeground} disabled={disabled}>
+                <TouchableNativeFeedback {...rest} onPress={this.onPress} background={TouchableNativeFeedback.Ripple(color, borderless)} useForeground={useForeground} disabled={disabled}>
                     { children }
                 </TouchableNativeFeedback>
             );
         }
 
         return (
-            <TouchableOpacity {...this.props} disabled={disabled}>
+            <TouchableOpacity {...rest} onPress={this.onPress} disabled={disabled}>
                 { children }
             </TouchableOpacity>
         );

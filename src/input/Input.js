@@ -110,7 +110,7 @@ class Input extends Component {
         const { 
             autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, 
             editable, error_message_color, label, label_style, raised,
-            style: props_style, multiline, maxLength = null, required, icon, iconStyle
+            style: props_style, multiline, maxLength = null, required, icon, iconStyle, placeholderTextColor
         } = this.props;
 
         const { text, error, error_message } = this.state;
@@ -170,7 +170,7 @@ class Input extends Component {
                         autoFocus={ autoFocus }
                         underlineColorAndroid='transparent'
                         placeholder={ placeholder }
-                        placeholderTextColor="#d1d1d1"
+                        placeholderTextColor={ placeholderTextColor }
                         selectionColor={ selectionColor }
                         returnKeyType= { returnKeyType }
                         textAlign={ textAlign }
@@ -209,6 +209,7 @@ Input.propTypes = {
     label: PropTypes.string,
     label_style: PropTypes.object,
     selectionColor: PropTypes.string,
+    placeholderTextColor: PropTypes.string,
     returnKeyType: PropTypes.string,
     onChangeText: PropTypes.func,
     onSubmitEditing: PropTypes.func,
@@ -234,6 +235,7 @@ Input.defaultProps = {
     label: '',
     label_style: {},
     selectionColor: '#000',
+    placeholderTextColor: '#d1d1d1',
     returnKeyType: 'done',
     onChangeText: (text) => {},
     onSubmitEditing: () => {},

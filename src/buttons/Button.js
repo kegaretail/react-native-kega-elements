@@ -31,33 +31,32 @@ class Button extends Component {
         let label_style = labelStyle
 
         if (prop_style) {
+            container_style = {...prop_style}
 
-            if (prop_style.backgroundColor) {
-                inner_container_style.backgroundColor = prop_style.backgroundColor;
-                delete prop_style.backgroundColor;
+            if (container_style.backgroundColor) {
+                inner_container_style.backgroundColor = container_style.backgroundColor;
+                delete container_style.backgroundColor;
             }
 
-            if (prop_style.borderColor) {
-                inner_container_style.borderColor = prop_style.borderColor;
-                delete prop_style.borderColor;
+            if (container_style.borderColor) {
+                inner_container_style.borderColor = container_style.borderColor;
+                delete container_style.borderColor;
             }
 
-            if (prop_style.borderWidth) {
-                inner_container_style.borderWidth = prop_style.borderWidth;
-                delete prop_style.borderWidth;
+            if (container_style.borderWidth) {
+                inner_container_style.borderWidth = container_style.borderWidth;
+                delete container_style.borderWidth;
             }
 
-            if (prop_style.paddingLeft) {
-                inner_container_style.paddingLeft = prop_style.paddingLeft;
-                delete prop_style.paddingLeft;
+            if (container_style.paddingLeft) {
+                inner_container_style.paddingLeft = container_style.paddingLeft;
+                delete container_style.paddingLeft;
             }
 
-            if (prop_style.paddingRigth) {
-                inner_container_style.paddingRigth = prop_style.paddingRigth;
-                delete prop_style.paddingRigth;
+            if (container_style.paddingRigth) {
+                inner_container_style.paddingRigth = container_style.paddingRigth;
+                delete container_style.paddingRigth;
             }
-
-            container_style = prop_style;
 
         }
 
@@ -105,12 +104,17 @@ class Button extends Component {
         }
 
         if (full) {
-            container_style.width = '100%';
+       
+            container_style = {
+                ...container_style,
+                width: '100%'
+            }
 
             inner_container_style = {
                 ...inner_container_style,
                 width: '100%'
             }
+            
         } 
 
         return (

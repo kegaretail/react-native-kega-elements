@@ -85,7 +85,7 @@ class Counter extends Component {
     }
 
     componentWillUnmount() {
-        const { count, width, minus_x, input_x } = this.state;
+        const { count, width, minus_x, input_x, opened } = this.state;
         const { onClosed } = this.props;
 
         width.stopAnimation();
@@ -94,8 +94,8 @@ class Counter extends Component {
 
         clearTimeout(this.timeout);
 
-        if (onClosed) {
-            //onClosed(count);
+        if (onClosed && opened) {
+            onClosed(count);
         }
     }
 
@@ -170,13 +170,13 @@ class Counter extends Component {
     }
 
     open = () => {
-        const { count, width, input_x, minus_x, plus_x, opened } = this.state;
-        const { large, onOpen } = this.props;
+        const { input_x, minus_x} = this.state;
+        const { onOpen } = this.props;
 
         this.changeAnimation(this.value_when_clicked);
 
         this.setState({
-            opened: false,
+            opened: true,
             show_arrow: false
         });
 
@@ -202,8 +202,7 @@ class Counter extends Component {
         const { onClose, onClosed, zero_is_value } = this.props;
 
         this.changeAnimation(count);
-        this.setState({opened: true});
-    
+
         onClose();
 
         if (input_editable) {
@@ -216,9 +215,9 @@ class Counter extends Component {
         ]).start(() => {
         
             if (zero_is_value) {
-                this.setState({show_arrow: (count === '')});
+                this.setState({show_arrow: (count === ''), opened: false});
             } else if (!zero_is_value && (count === '')) {
-                this.setState({count: 0});
+                this.setState({count: 0, opened: false});
             }
 
             onClosed(count);
@@ -316,35 +315,41 @@ class Counter extends Component {
     }
 
     onInputChange = (value) => {
-
-        if (this.onchange_timeout !== null) {clearTimeout(this.onchange_timeout);}
-        this.onchange_timeout = setTimeout(() => {
-            this.change(value)
-        }, 500);
-
+        this.change(value);
     }
 
     render() {
 
         const { count, width, input_x, minus_x, input_editable, show_arrow, input_z_index, zero_is_value,} = this.state;
-        const { large, animated, button_style, max, min, showmax, disabled, input } = this.props;
+        const { large, animated, button_style, max, min, showmax, disabled, input, target } = this.props;
 
         let editable = (animated ? input_editable : true);
         if (!input) {
             editable = false;
         }
-        
+
+        let input_background_color = "#ffffff";
+        if (target != null && count > target) {
+            input_background_color = "#edcaca";
+        }
+
         return (
 
             <Animated.View style={[style.container, {width: width}]} >
 
-                <Animated.View style={[
-                    style.btn_container,
-                    {width: this.btn_width, paddingRight: 10}, 
-                    {opacity: this.minu_opacity, transform: [{translateX: minus_x}]}
-                ]}>
-                    <Button icon="minus" onPress={this.subtract} large={large} button_style={button_style} />
-                </Animated.View>   
+                {
+                    !disabled
+                    ?
+                        <Animated.View style={[
+                            style.btn_container,
+                            {width: this.btn_width, paddingRight: 10}, 
+                            {opacity: this.minu_opacity, transform: [{translateX: minus_x}]}
+                        ]}>
+                            <Button icon="minus" onPress={this.subtract} large={large} button_style={button_style} />
+                        </Animated.View>   
+                    :
+                        null
+                }  
       
                 <Animated.View 
                     ref={(input_container) => { 
@@ -372,8 +377,10 @@ class Counter extends Component {
                         onBlur={ this.onInputBlur } 
                         onChangeText={ this.onInputChange }
                         max={max}
+                        target={target}
                         showmax={showmax}
                         disabled={disabled}
+                        backgroundColor={input_background_color}
                     />
                 </Animated.View>   
 
@@ -382,13 +389,27 @@ class Counter extends Component {
                     {width: this.btn_width, paddingLeft: 10}, 
                     {opacity: this.plus_opacity, transform: [{translateX: this.plus_x}]}
                 ]}>
-                    {
-                        (show_arrow)
-                        ?
-                        <Button icon="arrow-left" onPress={this.open} large={large} disabled={(count<=min)} button_style={button_style} />
-                        :
-                        <Button icon="plus" onPress={this.add} large={large} disabled={(count>=max)} button_style={button_style} />
-                    }
+                {
+                    !disabled
+                    ?
+                        <Animated.View style={[
+                            style.btn_container, 
+                            {width: this.btn_width, paddingLeft: 10}, 
+                            {opacity: this.plus_opacity, transform: [{translateX: this.plus_x}]}
+                        ]}>
+                        
+                            {
+                                (show_arrow)
+                                ?
+                                <Button icon="arrow-left" onPress={this.open} large={large} disabled={(count<=min)} button_style={button_style} />
+                                :
+                                <Button icon="plus" onPress={this.add} large={large} disabled={(count>=max)} button_style={button_style} />
+                            }
+        
+                        </Animated.View>
+                    :
+                        null
+                }
 
                 </Animated.View>
     
@@ -406,6 +427,7 @@ Counter.propTypes = {
     ]),
     min: PropTypes.number, 
     max: PropTypes.number,
+    target: PropTypes.number,
     onChange: PropTypes.func,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
@@ -424,6 +446,7 @@ Counter.defaultProps = {
     value: 0,
     min: 0,
     max: 999,
+    target: null,
     style: {},
     large: false,
     onChange: (value) => {},

@@ -55,7 +55,7 @@ class Input extends Component {
 
     render() {
 
-        const { autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, small, onTouchStart, editable, onPress, onBlur, selectTextOnFocus, maxLength, style: props_style, showmax, max, disabled } = this.props;
+        const { autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, small, onTouchStart, editable, onPress, onBlur, selectTextOnFocus, maxLength, style: props_style, showmax, max, disabled, target, backgroundColor} = this.props;
         const { text } = this.state;
 
         let container_style = [style.container];
@@ -64,6 +64,10 @@ class Input extends Component {
         }
         container_style.push(props_style);
 
+        if (backgroundColor) {
+            container_style.push({backgroundColor: backgroundColor});
+        }
+
         if (disabled) {
             container_style.push({
                 elevation: 0,
@@ -71,7 +75,7 @@ class Input extends Component {
                 borderColor: '#e7e7e7'
             });
         }
-
+        
         let input_style = [style.input];
         if (small) {
             input_style.push(style.input_small);
@@ -123,6 +127,16 @@ class Input extends Component {
                     :
                         null
                 }
+
+                {
+                    target != null
+                    ?
+                        <View style={style.max_container}>
+                            <Text style={style.target_text}>{target}</Text>
+                        </View>
+                    :
+                        null
+                }
                  
                 </View>
             </TouchableWithoutFeedback>
@@ -135,6 +149,7 @@ Input.propTypes = {
     autoFocus: PropTypes.bool,
     placeholder: PropTypes.string,
     selectionColor: PropTypes.string,
+    backgroundColor: PropTypes.string,
     returnKeyType: PropTypes.string,
     onChangeText: PropTypes.func,
     onSubmitEditing: PropTypes.func,
@@ -149,6 +164,7 @@ Input.propTypes = {
     maxLength: PropTypes.number,
     showmax: PropTypes.bool,
     max: PropTypes.number,
+    target: PropTypes.number,
     disabled: PropTypes.bool,
 }
 
@@ -156,6 +172,7 @@ Input.defaultProps = {
     autoFocus: false,
     placeholder: '',
     selectionColor: 'rgba(70, 0, 62, 0.1)',
+    backgroundColor: '#ffffff',
     returnKeyType: 'done',
     onChangeText: (text) => {},
     onSubmitEditing: () => {},
@@ -171,6 +188,7 @@ Input.defaultProps = {
     maxLength: 3,
     showmax: true,
     max: 0,
+    target: null,
     disabled: false
 }
 
