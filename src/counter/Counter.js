@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 
 import {
+    View,
     Animated,
-    StyleSheet
+    Text,
+    StyleSheet 
 }                           from 'react-native';
 
 import Input                from './input/Input';
@@ -136,7 +138,7 @@ class Counter extends Component {
     change = (value) => {
    
         const { onChange, animated } = this.props;
-        const { width, count, input_editable } = this.state;
+        const { count, input_editable } = this.state;
 
         if (animated && input_editable) {
             this.setState({input_editable: false});
@@ -170,7 +172,7 @@ class Counter extends Component {
     }
 
     open = () => {
-        const { input_x, minus_x} = this.state;
+        const { width, input_x, minus_x, opened } = this.state;
         const { onOpen } = this.props;
 
         this.changeAnimation(this.value_when_clicked);
@@ -198,26 +200,33 @@ class Counter extends Component {
     }
 
     close = () => {
-        const { count, width, input_x, minus_x, plus_x, input_editable } = this.state;
-        const { onClose, onClosed, zero_is_value } = this.props;
+        const { count, width, input_x, minus_x, input_editable } = this.state;
+        const { onClose, onClosed, empty_is_value, zero_is_value } = this.props;
 
-        this.changeAnimation(count);
+        let counter_value = count;
+        if (!empty_is_value && count === '') { 
+            counter_value = 0; 
+            this.setState({count: counter_value});
+        }
+   
+        this.changeAnimation(counter_value);
 
         onClose();
 
         if (input_editable) {
             this.setState({input_editable: false});
         }
+        
         Animated.parallel([
             Animated.spring(width, { toValue: this.min_width }),
             Animated.spring(input_x, { toValue: 0 }),
             Animated.spring(minus_x, { toValue: (this.min_width-this.btn_width) })
         ]).start(() => {
-        
-            if (zero_is_value) {
-                this.setState({show_arrow: (count === ''), opened: false});
-            } else if (!zero_is_value && (count === '')) {
-                this.setState({count: 0, opened: false});
+
+            if (zero_is_value || empty_is_value) {
+                this.setState({opened: false, show_arrow: (count === '')}, );
+            } else {
+                this.setState({opened: false});
             }
 
             onClosed(count);
@@ -231,7 +240,7 @@ class Counter extends Component {
         this.last_value = count;
 
         const { width } = this.state;
-        const { animated, zero_is_value } = this.props;
+        const { zero_is_value } = this.props;
 
         this.plus_x = width.interpolate({
             inputRange: [this.min_width, this.max_width],
@@ -284,7 +293,7 @@ class Counter extends Component {
     }
 
     onInputPress = () => {
-        const { opened, width, count } = this.state;
+        const { width, count } = this.state;
         const { animated, disabled } = this.props;
 
         if (disabled) { return; }
@@ -320,7 +329,7 @@ class Counter extends Component {
 
     render() {
 
-        const { count, width, input_x, minus_x, input_editable, show_arrow, input_z_index, zero_is_value,} = this.state;
+        const { count, width, input_x, minus_x, input_editable, show_arrow, input_z_index } = this.state;
         const { large, animated, button_style, max, min, showmax, disabled, input, target } = this.props;
 
         let editable = (animated ? input_editable : true);
@@ -332,7 +341,7 @@ class Counter extends Component {
         if (target != null && count > target) {
             input_background_color = "#edcaca";
         }
-
+        
         return (
 
             <Animated.View style={[style.container, {width: width}]} >
@@ -349,8 +358,8 @@ class Counter extends Component {
                         </Animated.View>   
                     :
                         null
-                }  
-      
+                }
+
                 <Animated.View 
                     ref={(input_container) => { 
                         this.input_container = input_container;
@@ -384,11 +393,6 @@ class Counter extends Component {
                     />
                 </Animated.View>   
 
-                <Animated.View style={[
-                    style.btn_container, 
-                    {width: this.btn_width, paddingLeft: 10}, 
-                    {opacity: this.plus_opacity, transform: [{translateX: this.plus_x}]}
-                ]}>
                 {
                     !disabled
                     ?
@@ -411,8 +415,6 @@ class Counter extends Component {
                         null
                 }
 
-                </Animated.View>
-    
             </Animated.View>
 
         );
@@ -435,11 +437,12 @@ Counter.propTypes = {
     large: PropTypes.bool,
     animated: PropTypes.bool,
     zero_is_value: PropTypes.bool,
+    empty_is_value: PropTypes.bool,
     button_style: PropTypes.object,
     disabled: PropTypes.bool,
     showmax: PropTypes.bool,
     open: PropTypes.bool,
-    input: PropTypes.bool
+    input: PropTypes.bool,
 }
 
 Counter.defaultProps = {
@@ -455,6 +458,7 @@ Counter.defaultProps = {
     onClosed: (value) => {},
     animated: true,
     zero_is_value: false,
+    empty_is_value: false,
     button_style: {background:'#000000', color:'#ffffff'},
     disabled: false,
     showmax: false,
@@ -491,6 +495,5 @@ const style = StyleSheet.create({
         marginRight: 14,
 	}
 });
-
 
 export default Counter;
