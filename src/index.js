@@ -15,7 +15,8 @@ import ProductListItemCompact	from './productlist/itemcompact/ProductListItemCom
 
 import {
     Theme,
-    ThemeContext
+    ThemeContext,
+    ThemeProvider
 }                           from './Theme';
 
 export { 
@@ -34,5 +35,6 @@ export {
     ProductListItemCompact,
 
     Theme,
-    ThemeContext
+    ThemeContext,
+    ThemeProvider
 };

@@ -1,8 +1,5 @@
 import React 				from 'react';
 import { Text, View, ScrollView } 		from 'react-native';
-import { 
-	createBottomTabNavigator 
-} 							from 'react-navigation';
 
 import Icon                 from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient 		from 'react-native-linear-gradient';
@@ -27,18 +24,27 @@ class ButtonsView extends React.Component {
 					<Text style={{fontSize: 30}}>Buttons</Text>
 					<View style={{height: 28}} />
 
-					<Button label="Contained raised" raised/>
+					<Button label="Contained raised" thme="special" raised/>
 					<View style={{height: 14}} />
 					<Button label="Contained icon" icon={<Icon color="white" name="home" size={18} />} style={{backgroundColor:'#333333'}} rippleColor='rgba(255, 255, 255, 0.3)' raised/>
 					<View style={{height: 14}}/>
-					<Button label="Contained" full={false}/>
+					<Button label="Contained" full={false} loading/>
 					<View style={{height: 14}} />
-					<Button label="Outlined button" type="outlined" labelStyle={{color:'#333333'}} style={{borderColor: '#333333' }} />
+					<Button label="Outlined button" outlined loading/>
 					<View style={{height: 14}} />
-					<Button label="Text button" type="text" ripple={false}/>
+					<Button label="Text button" text ripple={false}/>
 					<View style={{height: 14}} />
 					<Button label="Contained raised" gradientProps={{colors:['#5bb4a5', '#333333'], start:{x: 0, y: 0}, end:{x: 1, y: 1}}} ViewComponent={LinearGradient} raised/>
-
+					<View style={{height: 14}} />
+					<Button label="Switch button" onPress={() =>{
+			
+						this.context.updateTheme({
+							buttons: {
+								contained: {backgroundColor: '#0e0'}
+							}
+						});
+				
+					}} outlined />
 				</View>
 			</ScrollView>
 	

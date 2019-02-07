@@ -3,10 +3,12 @@ import {
     View, 
     StatusBar,
 }                           from 'react-native';
+import _                    from 'lodash';
 
 import { 
     Theme,
-    ThemeContext
+    ThemeContext,
+    ThemeProvider
 }                           from 'react-native-kega-elements';
 
 import Config               from './Config';
@@ -20,18 +22,37 @@ class App extends Component {
         StatusBar.setTranslucent(true);
         StatusBar.setBackgroundColor('rgba(0, 0, 0, 0.2)');
 
-        // Overwrite theme styles with config styles
-        this.style = {...Theme, ...Config};
+        this.style = {
+            colors: {
+                primary: '#000',
+            },
+
+            buttons: {
+                special: {backgroundColor: '#0e0'}
+            }
+
+        };
+
+        setTimeout(() => {
+
+            this.setState({
+                colors: {
+                    primary: '#fff',
+                }
+            });
+
+        }, 10000);
     }
 
     render() {
-        
+        console.log('####################################');
+
         return (
             <View style={{flex:1}}>
                 
-                <ThemeContext.Provider value={ this.style }>
+                <ThemeProvider theme={ this.style } >
                     <Navigator />
-                </ThemeContext.Provider>
+                </ThemeProvider>
 
             </View>
         );

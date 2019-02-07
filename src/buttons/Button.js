@@ -6,7 +6,8 @@ import {
   Text,
   Platform,
   StyleSheet,
-  ViewPropTypes
+  ViewPropTypes,
+  ActivityIndicator
 }                           from 'react-native';
 
 import Touchable            from './Touchable';
@@ -17,90 +18,65 @@ class Button extends Component {
 
     render() {
 
-        console.log(this.context);
-        
         const { 
-            type, label, labelStyle, disabled, raised, borderRadius, ripple, rippleColor, icon, 
-            iconRight, onPress, ViewComponent = View, gradientProps, full, style: prop_style 
+            custom, label, disabled, raised, borderRadius, ripple, rippleColor, icon, 
+            iconRight, onPress, ViewComponent = View, gradientProps, full, style: prop_style,
+            contained, outlined, text,loading
         } = this.props;
+
+        const { theme } = this.context
 
         let is_raised = raised;
 
         let container_style = {};
         let inner_container_style = {};
-        let label_style = labelStyle
+        let label_style = {};
 
-        if (prop_style) {
-            container_style = {...prop_style}
+        let buttonRippleColor = 'ThemeAttrAndroid';
 
-            if (container_style.backgroundColor) {
-                inner_container_style.backgroundColor = container_style.backgroundColor;
-                delete container_style.backgroundColor;
-            }
-
-            if (container_style.borderColor) {
-                inner_container_style.borderColor = container_style.borderColor;
-                delete container_style.borderColor;
-            }
-
-            if (container_style.borderWidth) {
-                inner_container_style.borderWidth = container_style.borderWidth;
-                delete container_style.borderWidth;
-            }
-
-            if (container_style.paddingLeft) {
-                inner_container_style.paddingLeft = container_style.paddingLeft;
-                delete container_style.paddingLeft;
-            }
-
-            if (container_style.paddingRigth) {
-                inner_container_style.paddingRigth = container_style.paddingRigth;
-                delete container_style.paddingRigth;
-            }
-
+        // Set button type
+        let type = 'contained';
+        if (outlined) {
+            type = 'outlined';
+        } else if (text) {
+            type = 'text';
         }
 
-        switch(type) {
+        if (custom != undefined) { type = custom; }
 
-            case 'contained':
 
-                break;
+        // Get style from theme
+        if (theme.buttons && theme.buttons[type]) {
+            const context_style = theme.buttons[type];
+            const { backgroundColor, borderColor, borderWidth, color, fontSize, rippleColor } = context_style;
 
-            case 'outlined':
-                is_raised = false;
+            if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
+            if (borderColor) { inner_container_style.borderColor = borderColor; }
+            if (borderWidth) { inner_container_style.borderWidth = borderWidth; }
+  
+            if (color) { label_style.color = color; }
+            if (fontSize) { label_style.color = fontSize; }
 
-                var { borderWidth, backgroundColor, borderColor } = inner_container_style;
+            if (rippleColor) { buttonRippleColor = rippleColor; }
+            
+        }
 
-                inner_container_style = {
-                    ...inner_container_style,
-                    borderColor: (borderColor ? borderColor : '#333333'),
-                    borderWidth: (borderWidth ? borderWidth : 1),
-                    backgroundColor: (backgroundColor ? backgroundColor : 'rgba(0, 0, 0, 0)')
-                };
+        if (rippleColor) {
+            buttonRippleColor = rippleColor;
+        }
+        
+        // Override button style from props
+        if (prop_style) {
+            const { backgroundColor, borderColor, borderWidth, paddingLeft, paddingRigth, color, fontSize, ...container_style} = prop_style;
 
-                if (!labelStyle.color) {
-                    labelStyle.color = '#333333';
-                }
+            if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
+            if (borderColor) { inner_container_style.borderColor = borderColor; }
+            if (borderWidth) { inner_container_style.borderWidth = borderWidth; }
+            if (paddingLeft) { inner_container_style.paddingLeft = paddingLeft; }
+            if (paddingRigth) { inner_container_style.paddingRigth = paddingRigth; }
 
-                break;
-
-            case 'text':
-                is_raised = false;
-
-                inner_container_style = {
-                    ...inner_container_style,
-                    backgroundColor: 'rgba(255, 255, 255, 0)'
-                }
-
-                if (!label_style.color) {
-                    label_style = {
-                        ...label_style,
-                        color: '#333333'
-                    }
-                }
-
-                break;
-
+            if (color) { label_style.color = color; }
+            if (fontSize) { label_style.color = fontSize; }
         }
 
         if (full) {
@@ -126,7 +102,7 @@ class Button extends Component {
                 <Touchable
 					disabled={disabled}
 					onPress={onPress}
-					color={rippleColor}
+					color={buttonRippleColor}
 					activeOpacity={0.4}
 					borderless={borderRadius > 0}
                     useForeground={borderRadius > 0}
@@ -139,17 +115,18 @@ class Button extends Component {
                             inner_container_style
                         ]}
                         {...gradientProps}
-                    >
-                        { !iconRight && icon }
+                    >   
+                        { (!iconRight && !loading) && icon }
           
-                        <Text style={[
-                            style.label,
-                            label_style
-                        ]}>
-                            { label }
-                        </Text>
+                        {
+							loading
+							?
+							<ActivityIndicator size="small" color={label_style.color}/>
+							:
+							<Text style={[ style.label, label_style ]}> { label } </Text>
+						}
             
-                        { iconRight && icon }
+                        { (iconRight && !loading) && icon }
                     </ViewComponent>
                 </Touchable>
             </View>
@@ -176,22 +153,29 @@ Button.propTypes = {
     full: PropTypes.bool,
     gradientProps: PropTypes.object,
     onPress: PropTypes.func,
-    ViewComponent: PropTypes.any
+    ViewComponent: PropTypes.any,
+    custom: PropTypes.string,
+    contained: PropTypes.bool,
+    outlined: PropTypes.bool,
+    text: PropTypes.bool,
+    loading: PropTypes.bool 
 }
 
 Button.defaultProps = {
     type: 'contained',
     label: 'Button label',
-    labelStyle: {},
     raised: false,
     disabled: false,
     ripple: true,
-    rippleColor: 'ThemeAttrAndroid',
     borderRadius: 25,
     iconRight: false,
     full: true,
     gradientProps: {},
     onPress: () => console.log('Please attach a method to this component'),
+    contained: true,
+    outlined: false,
+    text: false,
+    loading: false
 }
 
 const style = StyleSheet.create({
