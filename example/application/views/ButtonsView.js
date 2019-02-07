@@ -26,11 +26,13 @@ class ButtonsView extends React.Component {
 
 					<Button label="Contained raised" thme="special" raised/>
 					<View style={{height: 14}} />
+					<Button label="Contained raised" thme="special" raised loading/>
+					<View style={{height: 28}} />
 					<Button label="Contained icon" icon={<Icon color="white" name="home" size={18} />} style={{backgroundColor:'#333333'}} rippleColor='rgba(255, 255, 255, 0.3)' raised/>
 					<View style={{height: 14}}/>
-					<Button label="Contained" full={false} loading/>
+					<Button label="Contained" full={false} />
 					<View style={{height: 14}} />
-					<Button label="Outlined button" outlined loading/>
+					<Button label="Outlined button" outlined />
 					<View style={{height: 14}} />
 					<Button label="Text button" text ripple={false}/>
 					<View style={{height: 14}} />
