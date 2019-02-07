@@ -1,4 +1,4 @@
-package com.example;
+package com.kegaelements;
 
 import android.app.Application;
 
