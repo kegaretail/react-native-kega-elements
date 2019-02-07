@@ -18,8 +18,5 @@
   "homepage": "https://github.com/kegaretail/react-native-kega-elements#readme",
   "dependencies": {
     "react-native-vector-icons": "^6.0.2"
-  },
-  "devDependencies": {
-    "@babel/runtime": "^7.1.5"
   }
 }
