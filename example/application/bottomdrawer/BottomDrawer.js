@@ -125,7 +125,7 @@ class BottomDrawer extends Component {
                         :
                             null
                 }
-                <View style={styles.buttons}>
+                <View style={[styles.buttons, {backgroundColor: style.backgroundColor}]}>
                     {
                         this.main_routes.map((route, index) => {
 

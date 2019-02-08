@@ -15,7 +15,6 @@ import ExtraView            from './views/ExtraView';
 
 import BottomDrawer         from './bottomdrawer/BottomDrawer';
 
-
 export default createAppContainer(createBottomTabNavigator({
 
     buttons: {

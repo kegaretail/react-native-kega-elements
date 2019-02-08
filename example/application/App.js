@@ -6,12 +6,9 @@ import {
 import _                    from 'lodash';
 
 import { 
-    Theme,
-    ThemeContext,
     ThemeProvider
 }                           from 'react-native-kega-elements';
 
-import Config               from './Config';
 import Navigator            from './Navigator';
 
 class App extends Component {
@@ -22,6 +19,10 @@ class App extends Component {
         StatusBar.setTranslucent(true);
         StatusBar.setBackgroundColor('rgba(0, 0, 0, 0.2)');
 
+        this.state = {
+            v: 0
+        }
+
         this.style = {
             colors: {
                 primary: '#000',
@@ -29,24 +30,39 @@ class App extends Component {
 
             buttons: {
                 special: {backgroundColor: '#0e0'}
+            },
+
+            bottombar: {
+                backgroundColor: '#000'
             }
 
         };
 
         setTimeout(() => {
-
-            this.setState({
+ 
+            this.style = {
                 colors: {
-                    primary: '#fff',
+                    primary: '#000',
+                },
+    
+                buttons: {
+                    special: {backgroundColor: '#0e0'}
+                },
+    
+                bottombar: {
+                    backgroundColor: '#0e0'
                 }
+    
+            };         
+            
+            this.setState({
+                v: 2
             });
 
         }, 10000);
     }
 
     render() {
-        console.log('####################################');
-
         return (
             <View style={{flex:1}}>
                 

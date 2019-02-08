@@ -32,8 +32,18 @@ class FormView extends React.Component {
 						placeholder="Placeholder" 
 						regex_validate={/[0-9]{12}$/g}
 						error_message="Verkeerde input"
-                        error_message_color="#fdafaf"
 						required={true}
+					/>
+					<View style={{height: 14}} />
+					<Input 
+						ref={ (input) => { this.input = input;} }
+						label="Label" 
+						placeholder="Placeholder" 
+						regex_validate={/[0-9]{12}$/g}
+						error_message="Verkeerde input"
+						required={true}
+						style={{height: 200}}
+						multiline={true}
 					/>
 					<View style={{height: 14}} />
 					<Input 
@@ -43,7 +53,6 @@ class FormView extends React.Component {
 						placeholder="Placeholder" 
 						regex_validate={/[0-9]{12}$/g}
 						error_message="Verkeerde input"
-                        error_message_color="#fdafaf"
 						required={true} 
 						icon={<Icon color="#333333" name="home" size={18} />}
 					/>
