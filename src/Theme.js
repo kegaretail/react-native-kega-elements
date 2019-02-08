@@ -27,40 +27,24 @@ const Theme = {
         contained: { backgroundColor: '#5bb4a5', color: '#ffffff' },
         outlined: { backgroundColor : 'rgba(0, 0, 0, 0)', borderColor: '#333333', borderWidth: 1, color: '#333333', rippleColor: 'rgba(0, 0, 0, 0.3)' },
         text: { backgroundColor : 'rgba(0, 0, 0, 0)', color: '#333333'},
+    },
+
+    inputs: {
+        normal: { backgroundColor: '#ffffff', selectionColor: '#000', placeholderTextColor: '#d1d1d1', errorColor: '#A7001F', errorBorderColor: '#A7001F', borderRadius: 8, labelColor: '#e0e' }
     }
 };
 
 class ThemeProvider extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            theme: _.merge(Theme, props.theme),
-        };
-
-    }
-
-    updateTheme = (updated_theme) => {
-        const { theme } = this.state;
-        
-        this.setState({
-            theme: _.merge({}, theme, updated_theme)
-        });
-
-    };
-  
-    getTheme = () => this.state.theme;
-  
     render() {
-        const { theme } = this.state;
-        const { children } = this.props;
+        const { children, theme } = this.props;
+        
+        const merged_theme = _.merge(Theme, theme);
 
         return (
             <ThemeContext.Provider
                 value={{
-                    theme: theme,
-                    updateTheme: this.updateTheme,
+                    theme: merged_theme,
                 }}
             >
                 { children }

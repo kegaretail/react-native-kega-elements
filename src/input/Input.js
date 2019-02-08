@@ -10,6 +10,8 @@ import {
     ViewPropTypes
 }                           from 'react-native';
 
+import { ThemeContext }     from '../Theme';
+
 class Input extends Component {
 
 	constructor(props) {
@@ -24,18 +26,6 @@ class Input extends Component {
         this.input = null;
 
     }
-    
-    /*
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const { value } = nextProps;
-
-        return {
-            ...prevState,
-            text: value
-        };
-        
-    }
-    */
 
    shouldComponentUpdate(nextProps) {
 
@@ -109,33 +99,95 @@ class Input extends Component {
 
         const { 
             autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, 
-            editable, error_message_color, label, label_style, raised,
-            style: props_style, multiline, maxLength = null, required, icon, iconStyle, placeholderTextColor
+            editable, label, raised,
+            style: props_style, multiline, maxLength = null, required, icon, iconStyle, placeholderTextColor, custom
         } = this.props;
 
         const { text, error, error_message } = this.state;
 
-        let input_container_style = [style.container];
-        input_container_style.push(props_style);
+        const { theme } = this.context
 
-        if (error) {
-            input_container_style.push(style.container_error);
+        let container_style = {};
+        let container_error_style = {
+            borderWidth: 2,
+            borderColor: '#A7001F'
+        };
+
+        let error_message_style = {
+            color: '#A7001F',
+            fontSize: 12
         }
-  
-        let input_style = [style.input];
+
+        let label_style = {}
+
+        let selection_color = '#d1d1d1';
+        let placeholder_text_color = '#d1d1d1';
+
+        let input_style = {};
+
+        // Set input type
+        let type = 'normal';
+
+        if (custom != undefined) { type = custom; }
+
+        // Get style from theme
+        if (theme.inputs && theme.inputs[type]) {
+            const context_style = theme.inputs[type];
+            const { backgroundColor, borderRadius, color, fontSize, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = context_style;
+
+            if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
+            if (borderRadius) { container_style.borderRadius = borderRadius; }
+            if (errorBorderColor) { container_error_style.borderColor = errorBorderColor; }
+
+            if (errorColor) { error_message_style.color = errorColor; }
+            if (errorFontSize) { error_message_style.fontSize = errorFontSize; }
+
+            if (selectionColor) { selection_color = selectionColor; }
+            if (placeholderTextColor) { placeholder_text_color = placeholderTextColor; }
+
+            if (color) { input_style.color = color; }
+            if (fontSize) { input_style.fontSize = fontSize; }
+
+            if (labelColor) { label_style.color = labelColor; }
+            if (lableFontSize) { label_style.fontSize = lableFontSize; }
+
+        }
+
+        // Props override
+        if (selectionColor) { selection_color = selectionColor; }
+        if (placeholderTextColor) { placeholder_text_color = placeholderTextColor; }
+
+
+
+        // Get style from props
         if (props_style) {
-            if (props_style.height) {
-                input_style.push({height: (props_style.height-20), textAlignVertical: 'top'});
-            }
+            const { backgroundColor, borderRadius, color, fontSize, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = props_style;
 
-            if (props_style.fontSize) {
-                input_style.push({fontSize: props_style.fontSize});
-            }
+            if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
+            if (borderRadius) { container_style.borderRadius = borderRadius; }
+            if (borderWidth) { container_style.borderWidth = borderWidth; }
+            if (borderColor) { container_style.borderColor = borderColor; }
 
-            if (props_style.color) {
-                input_style.push({fontSize: props_style.color});
-            }
+            if (errorBorderColor) { container_error_style.borderColor = errorBorderColor; }
 
+            if (errorColor) { error_message_style.color = errorColor; }
+            if (errorFontSize) { error_message_style.fontSize = errorFontSize; }
+
+            if (selectionColor) { selection_color = selectionColor; }
+            if (placeholderTextColor) { placeholder_text_color = placeholderTextColor; }
+
+            if (color) { input_style.color = color; }
+            if (fontSize) { input_style.fontSize = fontSize; }
+            if (height) { 
+                container_style.height = height;
+
+                input_style.height = (height-20); 
+                input_style.textAlignVertical = 'top';
+            }
+            
+            if (labelColor) { label_style.color = labelColor; }
+            if (lableFontSize) { label_style.fontSize = lableFontSize; }
+            
         }
 
         let optional_props = {}
@@ -157,21 +209,26 @@ class Input extends Component {
                 }
 
                 <View style={[
-                    input_container_style,
+                    style.container,
+                    container_style,
+                    error && container_error_style,
                     raised && style.raised
                 ]}>
                     { icon && <View style={[style.icon, iconStyle]}>{icon}</View> }
                     <TextInput
                         ref={(input) => { this.input = input;}}
-                        style={input_style}
+                        style={[
+                            style.input,
+                            input_style
+                        ]}
                         onChangeText={this.onChangeText}
                         onSubmitEditing={ onSubmitEditing }
                         value={ text }
                         autoFocus={ autoFocus }
                         underlineColorAndroid='transparent'
                         placeholder={ placeholder }
-                        placeholderTextColor={ placeholderTextColor }
-                        selectionColor={ selectionColor }
+                        placeholderTextColor={ placeholder_text_color }
+                        selectionColor={ selection_color }
                         returnKeyType= { returnKeyType }
                         textAlign={ textAlign }
                         keyboardType={ keyboardType }
@@ -188,7 +245,7 @@ class Input extends Component {
                         {
                             error
                             ?
-                                <Text style={[style.error_message, {color: error_message_color}]}>{ error_message }</Text>
+                                <Text style={[style.error_message, error_message_style]}>{ error_message }</Text>
                             :
                             null
                         }
@@ -207,7 +264,6 @@ Input.propTypes = {
     autoFocus: PropTypes.bool,
     placeholder: PropTypes.string,
     label: PropTypes.string,
-    label_style: PropTypes.object,
     selectionColor: PropTypes.string,
     placeholderTextColor: PropTypes.string,
     returnKeyType: PropTypes.string,
@@ -220,33 +276,29 @@ Input.propTypes = {
     required: PropTypes.bool,
     error: PropTypes.bool,
     error_message: PropTypes.string,
-    error_message_color: PropTypes.string,
     multiline: PropTypes.bool,
     maxLength: PropTypes.number,
     raised: PropTypes.bool,
     icon: PropTypes.element,
     iconStyle: ViewPropTypes.style,
     iconRight: PropTypes.bool,
+    custom: PropTypes.string
 }
 
 Input.defaultProps = {
     autoFocus: false,
     placeholder: '',
     label: '',
-    label_style: {},
-    selectionColor: '#000',
-    placeholderTextColor: '#d1d1d1',
     returnKeyType: 'done',
     onChangeText: (text) => {},
     onSubmitEditing: () => {},
     style: {},
-    textAlign:'left',
+    textAlign: 'left',
     keyboardType: 'default',
     value: '',
     editable: true,
     required: false,
     error_message: '',
-    error_message_color: '#A7001F',
     multiline: false,
     regex_allowed: null,
     raised: true
@@ -265,11 +317,6 @@ const style = StyleSheet.create({
 		backgroundColor: '#ffffff',
         height: 50,
         borderRadius: 8,
-	},
-
-	container_error: {
-		borderWidth: 2,
-		borderColor: '#A7001F'
 	},
 
 	label_container: {
@@ -293,11 +340,6 @@ const style = StyleSheet.create({
         height: 18,
 	},
 
-	error_message:{
-		color: '#A7001F',
-		fontSize: 12
-    },
-
     icon: {
         paddingRight: 5,
     },
@@ -317,5 +359,7 @@ const style = StyleSheet.create({
     }
 
 });
+
+Input.contextType = ThemeContext;
 
 export default Input;

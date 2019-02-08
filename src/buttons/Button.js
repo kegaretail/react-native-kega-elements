@@ -44,7 +44,6 @@ class Button extends Component {
 
         if (custom != undefined) { type = custom; }
 
-
         // Get style from theme
         if (theme.buttons && theme.buttons[type]) {
             const context_style = theme.buttons[type];
@@ -53,7 +52,7 @@ class Button extends Component {
             if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
             if (borderColor) { inner_container_style.borderColor = borderColor; }
             if (borderWidth) { inner_container_style.borderWidth = borderWidth; }
-  
+           
             if (color) { label_style.color = color; }
             if (fontSize) { label_style.color = fontSize; }
 
@@ -67,16 +66,16 @@ class Button extends Component {
         
         // Override button style from props
         if (prop_style) {
-            const { backgroundColor, borderColor, borderWidth, paddingLeft, paddingRigth, color, fontSize, ...container_style} = prop_style;
+            const { backgroundColor, borderColor, borderWidth, color, fontSize, rippleColor, ...prop_style_rest} = prop_style;
 
             if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
             if (borderColor) { inner_container_style.borderColor = borderColor; }
             if (borderWidth) { inner_container_style.borderWidth = borderWidth; }
-            if (paddingLeft) { inner_container_style.paddingLeft = paddingLeft; }
-            if (paddingRigth) { inner_container_style.paddingRigth = paddingRigth; }
 
             if (color) { label_style.color = color; }
             if (fontSize) { label_style.color = fontSize; }
+
+            if (rippleColor) { buttonRippleColor = rippleColor; }
         }
 
         if (full) {
@@ -141,7 +140,6 @@ Button.contextType = ThemeContext;
 Button.propTypes = {
     type: PropTypes.oneOf(['contained', 'outlined', 'text']),
     label: PropTypes.string,
-    labelStyle: Text.propTypes.style,
     style: ViewPropTypes.style,
     disabled: PropTypes.bool,
     raised: PropTypes.bool,
