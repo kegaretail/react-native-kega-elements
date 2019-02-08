@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 import { 
     View, 
-    StyleSheet,
+	StyleSheet,
+	Platform,
 	TouchableWithoutFeedback
 }							from 'react-native';
 
@@ -106,11 +107,21 @@ const style = StyleSheet.create({
 	panel: {
 		flex: 0,
 		margin: 0,
-		elevation: 2,
 		borderRadius: 8,
         backgroundColor: '#ffffff',
         overflow: 'hidden',
-        padding: 15
+		padding: 15,
+		...Platform.select({
+            ios: {
+                shadowColor: 'rgba(0,0,0, .4)',
+                shadowOffset: { height: 1, width: 1 },
+                shadowOpacity: 1,
+                shadowRadius: 1,
+            },
+            android: {
+                elevation: 2,
+            },
+        }),
     },
 
     btn_pannel: {
@@ -118,7 +129,7 @@ const style = StyleSheet.create({
     },
     
     content: {
-        borderRadius: 8,
+        //borderRadius: 8,
         padding: 15
     }
 });

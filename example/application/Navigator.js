@@ -77,7 +77,7 @@ export default createAppContainer(createBottomTabNavigator({
         style: {
             borderTopWidth: 0,
             borderTopColor: 'rgba(0, 0, 0, 1)',
-            backgroundColor: '#d5d5d5'
+            backgroundColor: '#fff'
         }
     }
 }));
