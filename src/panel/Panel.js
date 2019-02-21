@@ -121,7 +121,9 @@ const style = StyleSheet.create({
             android: {
                 elevation: 2,
             },
-        }),
+		}),
+		borderColor: (Platform.Version < 21 ? '#c8c8c8' : 'rgba(0,0,0,0)'),
+		borderWidth: (Platform.Version < 21 ? StyleSheet.hairlineWidth : 0) 
     },
 
     btn_pannel: {

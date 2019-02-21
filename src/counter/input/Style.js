@@ -1,6 +1,6 @@
 import {
 	StyleSheet,
-	Dimensions
+	Platform
 }                           from 'react-native';
 
 const style = StyleSheet.create({
@@ -18,6 +18,8 @@ const style = StyleSheet.create({
         height: 50,
         borderRadius: 25,
         elevation: 4,
+		borderColor: (Platform.Version < 21 ? '#c8c8c8' : 'rgba(0,0,0,0)'),
+		borderWidth: (Platform.Version < 21 ? StyleSheet.hairlineWidth : 0) 
 	},
 
 	container_small: {

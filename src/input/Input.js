@@ -131,7 +131,7 @@ class Input extends Component {
         if (custom != undefined) { type = custom; }
 
         // Get style from theme
-        if (theme.inputs && theme.inputs[type]) {
+        if (theme && theme.inputs && theme.inputs[type]) {
             const context_style = theme.inputs[type];
             const { backgroundColor, borderRadius, color, fontSize, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = context_style;
 

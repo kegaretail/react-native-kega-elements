@@ -45,7 +45,7 @@ class Button extends Component {
         if (custom != undefined) { type = custom; }
 
         // Get style from theme
-        if (theme.buttons && theme.buttons[type]) {
+        if (theme && theme.buttons && theme.buttons[type]) {
             const context_style = theme.buttons[type];
             const { backgroundColor, borderColor, borderWidth, color, fontSize, rippleColor } = context_style;
 
@@ -78,6 +78,10 @@ class Button extends Component {
             if (rippleColor) { buttonRippleColor = rippleColor; }
         }
 
+        if (disabled) {
+            container_style.opacity = 0.75;
+        }
+
         if (full) {
        
             container_style = {
@@ -106,6 +110,7 @@ class Button extends Component {
 					borderless={borderRadius > 0}
                     useForeground={borderRadius > 0}
                     ripple={ripple}
+                    style={{width: '100%'}} // Android 4.4 fix
 				>
                     <ViewComponent 
                         style={[
@@ -120,7 +125,7 @@ class Button extends Component {
                         {
 							loading
 							?
-							<ActivityIndicator size="small" color={label_style.color}/>
+							<ActivityIndicator size="small" color={(label_style.color ? label_style.color : '#fff')}/>
 							:
 							<Text style={[ style.label, label_style ]}> { label } </Text>
 						}
@@ -140,7 +145,7 @@ Button.contextType = ThemeContext;
 Button.propTypes = {
     type: PropTypes.oneOf(['contained', 'outlined', 'text']),
     label: PropTypes.string,
-    style: ViewPropTypes.style,
+    style: PropTypes.object,
     disabled: PropTypes.bool,
     raised: PropTypes.bool,
     ripple: PropTypes.bool,

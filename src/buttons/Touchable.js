@@ -19,13 +19,12 @@ class Touchable extends Component {
     }
 
     render() {
-
         const { color, borderless, children, useForeground, disabled, ripple, onPress, ...rest } = this.props;
 
         if (ripple && Platform.OS === 'android' && Platform.Version >= 21) {
 
             return (
-                <TouchableNativeFeedback {...rest} onPress={this.onPress} background={TouchableNativeFeedback.Ripple(color, borderless)} useForeground={useForeground} disabled={disabled}>
+                <TouchableNativeFeedback {...rest} onPress={this.onPress} background={TouchableNativeFeedback.Ripple(color, borderless)} useForeground={(TouchableNativeFeedback.canUseNativeForeground() ? useForeground : false)} disabled={disabled}>
                     { children }
                 </TouchableNativeFeedback>
             );
