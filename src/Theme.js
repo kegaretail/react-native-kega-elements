@@ -3,7 +3,7 @@ import PropTypes            from 'prop-types';
 import _                    from 'lodash';
 
 // Default theme
-const Theme = {
+const DefaultTheme = {
 
     colors: {
         primary: '#57004e',
@@ -41,17 +41,34 @@ const Theme = {
     }
 };
 
+class ThemeData {
+
+    constructor() {
+        this.style = DefaultTheme;
+    }
+
+    get data() {
+        return this.style;
+    }
+
+    merge = (theme) => {
+        this.style = _.merge(this.style, theme);
+    }
+}
+
+const Theme = new ThemeData();
+
 class ThemeProvider extends React.Component {
 
     render() {
         const { children, theme } = this.props;
         
-        const merged_theme = _.merge(Theme, theme);
+        Theme.merge(theme);
 
         return (
             <ThemeContext.Provider
                 value={{
-                    theme: merged_theme,
+                    theme: Theme.data,
                 }}
             >
                 { children }
