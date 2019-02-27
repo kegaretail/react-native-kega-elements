@@ -31,6 +31,13 @@ const Theme = {
 
     inputs: {
         normal: { backgroundColor: '#ffffff', selectionColor: '#000', placeholderTextColor: '#d1d1d1', errorColor: '#A7001F', errorBorderColor: '#A7001F', borderRadius: 8, labelColor: '#e0e' }
+    },
+
+    panel: {
+        backgroundColor: '#fff', 
+        borderRadius: 8,
+        padding: 15,
+		elevation: 2
     }
 };
 

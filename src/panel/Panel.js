@@ -9,6 +9,8 @@ import {
 
 import Touchable			from '../buttons/Touchable';
 
+import { ThemeContext }     from '../Theme';
+
 class Panel extends Component {
 	
 	onPressed = () => {
@@ -24,37 +26,65 @@ class Panel extends Component {
 
 	render() {
 
-		const { reference, onPress, onLongPress, feedback, borderless, onLayout, children, disabled, full, style: prop_style } = this.props;
+		const { reference, onPress, onLongPress, feedback, borderless, onLayout, children, disabled, style: prop_style } = this.props;
 	
-        let panel_style = {}
-            
-        if (full) {
-            panel_style.width = '100%';
-        } 
+		let panel_style = {}
+		let content_style = {}
+		
+		// Get style from theme
+		const { theme } = this.context
 
+		if (theme && theme.panel) {
+			const { backgroundColor, borderRadius, padding, elevation } = theme.panel;
+
+			if (backgroundColor) { panel_style.backgroundColor = backgroundColor; }
+			if (borderRadius) { panel_style.borderRadius = borderRadius; }
+			if (elevation !== undefined) { 
+	
+				//Todo: Calculate ios shadow by elevation
+				if (Platform.OS == 'android') {
+					panel_style.elevation = elevation;
+				} else {
+					panel_style.shadowColor = 'rgba(0,0,0, .4)',
+					panel_style.shadowOffset = { height: 1, width: 1 },
+					panel_style.shadowOpacity = 1;
+					panel_style.shadowRadius = 1;
+				}
+		
+			}
+
+			if (padding) { panel_style.padding = padding; }
+		}
+
+		// Override button style from props
+		if (prop_style) {
+			
+			panel_style = {
+				...panel_style,
+				...prop_style
+			}
+     
+		}
+      
 		if (onPress !== null || onLongPress !== null ) {
 
 			let TouchableComponent = TouchableWithoutFeedback;
 			if (feedback) {
 				TouchableComponent = Touchable;
-            }
+			}
+			
+			content_style.padding = panel_style.padding
 
-            let btn_prop_style = {...prop_style};
-            btn_prop_style.padding = 0;
-
-            if (btn_prop_style.paddingTop) { btn_prop_style.paddingTop = 0; }
-            if (btn_prop_style.paddingLeft) { btn_prop_style.paddingLeft = 0; }
-            if (btn_prop_style.paddingBottom) { btn_prop_style.paddingBottom = 0; }
-            if (btn_prop_style.paddingRight) { btn_prop_style.paddingRight = 0; }
+            panel_style.padding = 0;
 
 			return (
                 <View 
                     ref={reference} 
-                    style={[style.panel, style.btn_pannel, panel_style, btn_prop_style]}
+                    style={[style.panel, panel_style]}
                     onLayout={onLayout}
                 >
 					<TouchableComponent onPress={ this.onPressed } onLongPress={ onLongPress } borderless={ borderless } disabled={ disabled } >
-						<View style={[style.content, panel_style, prop_style]}>
+						<View style={[style.content, panel_style, content_style]}>
 							{ children }
 						</View>
 					</TouchableComponent>
@@ -63,7 +93,7 @@ class Panel extends Component {
 			
 		} else {
 			return (
-				<View ref={reference} style={[style.panel, panel_style, prop_style ]} onLayout={onLayout}>
+				<View ref={reference} style={[style.panel, panel_style ]} onLayout={onLayout}>
 					{ children }
 				</View>
 			);
@@ -71,6 +101,8 @@ class Panel extends Component {
 	}
 
 }
+
+Panel.contextType = ThemeContext;
 
 Panel.propTypes = {
 	style: PropTypes.oneOfType([
@@ -86,7 +118,6 @@ Panel.propTypes = {
 	onLayout: PropTypes.func,
 	reference: PropTypes.func,
     disabled: PropTypes.bool,
-    full: PropTypes.bool,
 };
 
 Panel.defaultProps = { 
@@ -98,8 +129,7 @@ Panel.defaultProps = {
 	borderless: false,
 	onLayout: () => {},
 	reference: (ref) => {},
-    disabled: false,
-    full: true,
+    disabled: false
 };
 
 const style = StyleSheet.create({
@@ -126,10 +156,6 @@ const style = StyleSheet.create({
 		borderWidth: (Platform.Version < 21 ? StyleSheet.hairlineWidth : 0) 
     },
 
-    btn_pannel: {
-        padding: 0
-    },
-    
     content: {
         //borderRadius: 8,
         padding: 15

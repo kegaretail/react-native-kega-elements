@@ -181,8 +181,13 @@ class Input extends Component {
             if (height) { 
                 container_style.height = height;
 
-                input_style.height = (height-20); 
-                input_style.textAlignVertical = 'top';
+                if (height > 50) {
+                    input_style.height = (height-20); 
+                    input_style.textAlignVertical = 'top';
+                } else{
+                    input_style.height = height;
+                }
+         
             }
             
             if (labelColor) { label_style.color = labelColor; }
