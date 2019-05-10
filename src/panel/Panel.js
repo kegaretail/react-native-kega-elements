@@ -73,7 +73,12 @@ class Panel extends Component {
 				TouchableComponent = Touchable;
 			}
 			
-			content_style.padding = panel_style.padding
+			content_style.padding = panel_style.padding;
+			content_style.margin = 0;
+			content_style.marginTop = 0;
+			content_style.marginRight = 0;
+			content_style.marginBottom = 0;
+			content_style.marginLeft = 0;
 
             panel_style.padding = 0;
 
@@ -110,7 +115,6 @@ Panel.propTypes = {
 		PropTypes.array,
 		PropTypes.number
 	]),
-	content_style: PropTypes.object,
 	onPress: PropTypes.func,
 	onLongPress: PropTypes.func,
 	feedback: PropTypes.bool,
@@ -122,7 +126,6 @@ Panel.propTypes = {
 
 Panel.defaultProps = { 
 	style: {},
-	content_style: {},
 	onPress: null,
 	onLongPress: null,
 	feedback: false,
@@ -158,7 +161,8 @@ const style = StyleSheet.create({
 
     content: {
         //borderRadius: 8,
-        padding: 15
+		padding: 15,
+		width: '100%'
     }
 });
 

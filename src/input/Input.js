@@ -129,14 +129,16 @@ class Input extends Component {
         let type = 'normal';
 
         if (custom != undefined) { type = custom; }
-
+    
         // Get style from theme
         if (theme && theme.inputs && theme.inputs[type]) {
             const context_style = theme.inputs[type];
-            const { backgroundColor, borderRadius, color, fontSize, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = context_style;
+            const { backgroundColor, borderRadius, borderWidth, borderColor, color, fontSize, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = context_style;
 
             if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
             if (borderRadius) { container_style.borderRadius = borderRadius; }
+            if (borderColor) { container_style.borderColor = borderColor; }
+            if (borderWidth) { container_style.borderWidth = borderWidth; }
             if (errorBorderColor) { container_error_style.borderColor = errorBorderColor; }
 
             if (errorColor) { error_message_style.color = errorColor; }
