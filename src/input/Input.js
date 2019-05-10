@@ -71,6 +71,12 @@ class Input extends Component {
         }
 
     } 
+    
+    focus = () => {
+        if (this.input) {
+            this.input.focus();
+        }
+    }
 
     validate = () => {
 
