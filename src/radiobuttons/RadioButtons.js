@@ -14,8 +14,17 @@ class RadioButtons extends Component {
 	constructor(props) {
         super(props);
 
+        const { children } = props;
+
+        let selected_index = null;
+        children.forEach((child, index) => {
+            if (child.props.selected) {
+                selected_index = index;
+            }
+        });
+
         this.state = {
-            selected: null
+            selected: selected_index
         }
     }
 
@@ -32,7 +41,7 @@ class RadioButtons extends Component {
         const { selected } = this.state;
 
         return (
-            <View>
+            <View style={{marginTop: 10}}>
                 { 
                     React.Children.map(children, (child, index) => {
                         return React.cloneElement(child, {
@@ -52,7 +61,7 @@ RadioButtons.propTypes = {
 };
 
 RadioButtons.defaultProps = { 
-    onSelected: () => {}
+    onSelected: () => {},
 }
 
 export default RadioButtons;

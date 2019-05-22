@@ -26,7 +26,7 @@ class Panel extends Component {
 
 	render() {
 
-		const { reference, onPress, onLongPress, feedback, borderless, onLayout, children, disabled, style: prop_style } = this.props;
+		const { reference, onPress, onLongPress, feedback, borderless, onLayout, children, disabled, useForeground, style: prop_style } = this.props;
 	
 		let panel_style = {}
 		let content_style = {}
@@ -88,7 +88,7 @@ class Panel extends Component {
                     style={[style.panel, panel_style]}
                     onLayout={onLayout}
                 >
-					<TouchableComponent onPress={ this.onPressed } onLongPress={ onLongPress } borderless={ borderless } disabled={ disabled } >
+					<TouchableComponent onPress={ this.onPressed } onLongPress={ onLongPress } borderless={ borderless } useForeground={ useForeground } disabled={ disabled } >
 						<View style={[style.content, panel_style, content_style]}>
 							{ children }
 						</View>
@@ -119,6 +119,7 @@ Panel.propTypes = {
 	onLongPress: PropTypes.func,
 	feedback: PropTypes.bool,
 	borderless: PropTypes.bool,
+	useForeground: PropTypes.bool,
 	onLayout: PropTypes.func,
 	reference: PropTypes.func,
     disabled: PropTypes.bool,
@@ -130,6 +131,7 @@ Panel.defaultProps = {
 	onLongPress: null,
 	feedback: false,
 	borderless: false,
+	useForeground: false,
 	onLayout: () => {},
 	reference: (ref) => {},
     disabled: false

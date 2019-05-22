@@ -30,7 +30,7 @@ const DefaultTheme = {
     },
 
     inputs: {
-        normal: { backgroundColor: '#ffffff', selectionColor: '#000', placeholderTextColor: '#d1d1d1', errorColor: '#A7001F', errorBorderColor: '#A7001F', borderRadius: 8, labelColor: '#e0e' }
+        normal: { backgroundColor: '#ffffff', selectionColor: '#000', placeholderTextColor: '#d1d1d1', errorColor: '#A7001F', errorBorderColor: '#A7001F', borderRadius: 8, labelColor: '#000' }
     },
 
     panel: {

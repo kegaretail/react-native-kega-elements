@@ -106,7 +106,8 @@ class Input extends Component {
         const { 
             autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, 
             editable, label, raised,
-            style: props_style, multiline, maxLength = null, required, icon, iconStyle, placeholderTextColor, custom
+            style: props_style, multiline, maxLength = null, required, icon, iconStyle, placeholderTextColor, custom, value, onChangeText,
+            ...restProps
         } = this.props;
 
         const { text, error, error_message } = this.state;
@@ -169,7 +170,7 @@ class Input extends Component {
 
         // Get style from props
         if (props_style) {
-            const { backgroundColor, borderRadius, color, fontSize, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = props_style;
+            const { backgroundColor, borderRadius, color, fontSize, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize, onChangeText } = props_style;
 
             if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
             if (borderRadius) { container_style.borderRadius = borderRadius; }
@@ -207,7 +208,7 @@ class Input extends Component {
         if (maxLength) {
             optional_props.maxLength = maxLength;
         }
-        
+
         return (
             <View style={{width: '100%'}}>
                 {
@@ -248,6 +249,7 @@ class Input extends Component {
                         editable={ editable }
                         multiline={ multiline }
                         {...optional_props}
+                        {...restProps}
                     />
             
                 </View>
