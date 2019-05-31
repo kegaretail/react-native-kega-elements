@@ -112,7 +112,9 @@ class Input extends Component {
 
         const { text, error, error_message } = this.state;
 
-        const { theme } = this.context
+        const { theme } = this.context;
+
+        let root_style = {}
 
         let container_style = {};
         let container_error_style = {
@@ -170,7 +172,7 @@ class Input extends Component {
 
         // Get style from props
         if (props_style) {
-            const { backgroundColor, borderRadius, color, fontSize, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize, onChangeText } = props_style;
+            const { backgroundColor, borderRadius, color, fontSize, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize, onChangeText, width } = props_style;
 
             if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
             if (borderRadius) { container_style.borderRadius = borderRadius; }
@@ -201,6 +203,8 @@ class Input extends Component {
             
             if (labelColor) { label_style.color = labelColor; }
             if (lableFontSize) { label_style.fontSize = lableFontSize; }
+
+            if (width) { root_style.width = width; }
             
         }
 
@@ -210,7 +214,7 @@ class Input extends Component {
         }
 
         return (
-            <View style={{width: '100%'}}>
+            <View style={root_style}>
                 {
                     label
                     ?
