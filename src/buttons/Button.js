@@ -47,14 +47,18 @@ class Button extends Component {
         // Get style from theme
         if (theme && theme.buttons && theme.buttons[type]) {
             const context_style = theme.buttons[type];
-            const { backgroundColor, borderColor, borderWidth, color, fontSize, rippleColor, height, paddingLeft, paddingRight } = context_style;
+            const { backgroundColor, borderColor, borderRadius, borderWidth, color, fontSize, rippleColor, height, paddingLeft, paddingRight } = context_style;
 
             if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
             if (borderColor) { inner_container_style.borderColor = borderColor; }
-            if (borderWidth) { inner_container_style.borderWidth = borderWidth; }
+            if (borderRadius !== undefined) { 
+                inner_container_style.borderRadius = borderRadius; 
+                container_style.borderRadius = borderRadius; 
+            }
+            if (borderWidth !== undefined) { inner_container_style.borderWidth = borderWidth; }
 
-            if (paddingLeft) { inner_container_style.paddingLeft = paddingLeft; }
-            if (paddingRight) { inner_container_style.paddingRight = paddingRight; }
+            if (paddingLeft !== undefined) { inner_container_style.paddingLeft = paddingLeft; }
+            if (paddingRight !== undefined) { inner_container_style.paddingRight = paddingRight; }
            
             if (color) { label_style.color = color; }
             if (fontSize) { label_style.fontSize = fontSize; }
@@ -71,14 +75,18 @@ class Button extends Component {
         
         // Override button style from props
         if (prop_style) {
-            const { backgroundColor, borderColor, borderWidth, color, fontSize, rippleColor, height, paddingLeft, paddingRight, ...prop_style_rest} = prop_style;
+            const { backgroundColor, borderColor, borderWidth, borderRadius, color, fontSize, rippleColor, height, paddingLeft, paddingRight, ...prop_style_rest} = prop_style;
 
             if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
             if (borderColor) { inner_container_style.borderColor = borderColor; }
-            if (borderWidth) { inner_container_style.borderWidth = borderWidth; }
+            if (borderRadius !== undefined) { 
+                inner_container_style.borderRadius = borderRadius; 
+                container_style.borderRadius = borderRadius; 
+            }
+            if (borderWidth !== undefined) { inner_container_style.borderWidth = borderWidth; }
 
-            if (paddingLeft) { inner_container_style.paddingLeft = paddingLeft; }
-            if (paddingRight) { inner_container_style.paddingRight = paddingRight; }
+            if (paddingLeft !== undefined) { inner_container_style.paddingLeft = paddingLeft; }
+            if (paddingRight !== undefined) { inner_container_style.paddingRight = paddingRight; }
 
             if (color) { label_style.color = color; }
             if (fontSize) { label_style.fontSize = fontSize; }
@@ -107,6 +115,9 @@ class Button extends Component {
             
         } 
 
+        let borderless = ( inner_container_style.borderRadius > 0 );
+        let useForeground = ( inner_container_style.borderRadius > 0 );
+
         return (
             <View style={[
                 style.container, 
@@ -118,8 +129,8 @@ class Button extends Component {
 					onPress={onPress}
 					color={buttonRippleColor}
 					activeOpacity={0.4}
-					borderless={borderRadius > 0}
-                    useForeground={borderRadius > 0}
+					borderless={borderless}
+                    useForeground={useForeground}
                     ripple={ripple}
                     style={{width: '100%'}} // Android 4.4 fix
 				>

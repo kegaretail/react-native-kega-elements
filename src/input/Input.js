@@ -145,9 +145,9 @@ class Input extends Component {
             const { backgroundColor, borderRadius, borderWidth, borderColor, color, fontSize, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = context_style;
 
             if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
-            if (borderRadius) { container_style.borderRadius = borderRadius; }
+            if (borderRadius !== undefined) { container_style.borderRadius = borderRadius; }
             if (borderColor) { container_style.borderColor = borderColor; }
-            if (borderWidth) { container_style.borderWidth = borderWidth; }
+            if (borderWidth !== undefined) { container_style.borderWidth = borderWidth; }
             if (errorBorderColor) { container_error_style.borderColor = errorBorderColor; }
 
             if (errorColor) { error_message_style.color = errorColor; }
@@ -175,8 +175,8 @@ class Input extends Component {
             const { backgroundColor, borderRadius, color, fontSize, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize, onChangeText, width } = props_style;
 
             if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
-            if (borderRadius) { container_style.borderRadius = borderRadius; }
-            if (borderWidth) { container_style.borderWidth = borderWidth; }
+            if (borderRadius !== undefined) { container_style.borderRadius = borderRadius; }
+            if (borderWidth !== undefined) { container_style.borderWidth = borderWidth; }
             if (borderColor) { container_style.borderColor = borderColor; }
 
             if (errorBorderColor) { container_error_style.borderColor = errorBorderColor; }

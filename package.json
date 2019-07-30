@@ -1,6 +1,6 @@
 {
   "name": "react-native-kega-elements",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Kega ui elements",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
