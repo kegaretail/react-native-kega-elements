@@ -17,7 +17,7 @@ const style = StyleSheet.create({
 		backgroundColor: '#ffffff',
         height: 50,
         borderRadius: 25,
-        elevation: 4,
+        elevation: 0,
 		borderColor: (Platform.Version < 21 ? '#c8c8c8' : 'rgba(0,0,0,0)'),
 		borderWidth: (Platform.Version < 21 ? StyleSheet.hairlineWidth : 0) 
 	},

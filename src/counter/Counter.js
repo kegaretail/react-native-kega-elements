@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 
 import {
-    View,
     Animated,
-    Text,
     StyleSheet 
 }                           from 'react-native';
 
@@ -16,7 +14,7 @@ class Counter extends Component {
 	constructor(props) {
         super(props);
 
-        const { large, animated, value, open } = props;
+        const { large, animated, value, open, zero_is_value, empty_is_value } = props;
 
         this.btn_width = (large ? 67 : 55);
         this.max_width = (large ? 234 : 180);
@@ -32,6 +30,16 @@ class Counter extends Component {
             start_minus_x = 0;
         }
 
+        let plus_opacity_value;
+        let input_opacity_value;
+        if ((zero_is_value && value === 0) || value > 0) {
+            plus_opacity_value = 0;
+            input_opacity_value = 1;
+        } else {
+            plus_opacity_value = 1;
+            input_opacity_value = (value === '' || value === 0 ? 0 : 1);
+        }
+
         if (open) {
             this.state = {
                 opened: true,
@@ -39,6 +47,9 @@ class Counter extends Component {
                 width: new Animated.Value(this.max_width),
                 minus_x: new Animated.Value(0),
                 input_x: new Animated.Value(this.btn_width),
+                input_opacity: new Animated.Value(1),
+                minu_opacity: new Animated.Value(1),
+                plus_opacity: new Animated.Value(1),
                 input_editable: false,
                 input_z_index: (value === 0 || value === '' ? 1 : 999),
                 show_arrow: false,
@@ -51,6 +62,9 @@ class Counter extends Component {
                 width: new Animated.Value(start_width),
                 minus_x: new Animated.Value(start_minus_x),
                 input_x: new Animated.Value(start_input_x),
+                input_opacity: new Animated.Value(input_opacity_value),
+                minu_opacity: new Animated.Value(0),
+                plus_opacity: new Animated.Value(plus_opacity_value),
                 input_editable: false,
                 input_z_index: (value === 0 || value === '' ? 1 : 999),
                 show_arrow: (value === ''),
@@ -172,7 +186,7 @@ class Counter extends Component {
     }
 
     open = () => {
-        const { width, input_x, minus_x, opened } = this.state;
+        const { width, input_x, minus_x, opened, input_opacity, minu_opacity, plus_opacity } = this.state;
         const { onOpen } = this.props;
 
         this.changeAnimation(this.value_when_clicked);
@@ -192,7 +206,10 @@ class Counter extends Component {
         Animated.parallel([
             Animated.spring(width, { toValue: this.max_width }),
             Animated.spring(input_x, { toValue: this.btn_width }),
-            Animated.spring(minus_x, { toValue: 0 })
+            Animated.spring(minus_x, { toValue: 0 }),
+            Animated.timing(minu_opacity, { toValue: 1 }),
+            Animated.spring(input_opacity, { toValue: 1 }),
+            Animated.timing(plus_opacity, { toValue: 1 }),
         ]).start(() => {
         
         });
@@ -200,13 +217,14 @@ class Counter extends Component {
     }
 
     close = () => {
-        const { count, width, input_x, minus_x, input_editable } = this.state;
-        const { onClose, onClosed, empty_is_value, zero_is_value } = this.props;
+        const { count, width, input_x, minus_x, input_editable, input_opacity, minu_opacity, plus_opacity } = this.state;
+        const { onChange, onClose, onClosed, empty_is_value, zero_is_value } = this.props;
 
         let counter_value = count;
         if (!empty_is_value && count === '') { 
             counter_value = 0; 
             this.setState({count: counter_value});
+            //onChange(counter_value);
         }
    
         this.changeAnimation(counter_value);
@@ -216,11 +234,24 @@ class Counter extends Component {
         if (input_editable) {
             this.setState({input_editable: false});
         }
-        
+
+        let plus_opacity_value;
+        let input_opacity_value;
+        if ((zero_is_value && count === 0) || count > 0) {
+            plus_opacity_value = 0;
+            input_opacity_value = 1;
+        } else {
+            plus_opacity_value = 1;
+            input_opacity_value = (count === '' || count === 0 ? 0 : 1);
+        }
+
         Animated.parallel([
             Animated.spring(width, { toValue: this.min_width }),
             Animated.spring(input_x, { toValue: 0 }),
-            Animated.spring(minus_x, { toValue: (this.min_width-this.btn_width) })
+            Animated.spring(input_opacity, { toValue: input_opacity_value }),
+            Animated.spring(minus_x, { toValue: (this.min_width-this.btn_width)}),
+            Animated.spring(minu_opacity, { toValue: 0}),
+            Animated.spring(plus_opacity, { toValue: plus_opacity_value}),
         ]).start(() => {
 
             if (zero_is_value || empty_is_value) {
@@ -252,7 +283,7 @@ class Counter extends Component {
             if (this.input_container) {
                 this.input_container.setNativeProps({ style: { zIndex: 999 } });
             }
-
+/*
             this.minu_opacity = width.interpolate({
                 inputRange: [this.min_width, this.max_width],
                 outputRange: [0, 1]
@@ -267,13 +298,13 @@ class Counter extends Component {
                 inputRange: [this.min_width, this.max_width],
                 outputRange: [0, 1]
             });
-
+*/
         } else {
   
             if (this.input_container) {
                 this.input_container.setNativeProps({ style: { zIndex: 1 } });
             }
-
+/*
             this.minu_opacity = this.state.width.interpolate({
                 inputRange: [this.min_width, this.max_width],
                 outputRange: [0, 1]
@@ -288,7 +319,7 @@ class Counter extends Component {
                 inputRange: [this.min_width, this.max_width],
                 outputRange: [1, 1]
             });
-
+*/
         }
     }
 
@@ -324,12 +355,15 @@ class Counter extends Component {
     }
 
     onInputChange = (value) => {
-        this.change(value);
+        if (this.onchange_timeout !== null) {clearTimeout(this.onchange_timeout);}
+        this.onchange_timeout = setTimeout(() => {
+            this.change(Number(value));
+        }, 500);
     }
 
     render() {
 
-        const { count, width, input_x, minus_x, input_editable, show_arrow, input_z_index } = this.state;
+        const { count, width, input_x, minus_x, input_editable, show_arrow, input_z_index, input_opacity, minu_opacity, plus_opacity } = this.state;
         const { large, animated, button_style, max, min, showmax, disabled, input, target } = this.props;
 
         let editable = (animated ? input_editable : true);
@@ -352,7 +386,7 @@ class Counter extends Component {
                         <Animated.View style={[
                             style.btn_container,
                             {width: this.btn_width, paddingRight: 10}, 
-                            {opacity: this.minu_opacity, transform: [{translateX: minus_x}]}
+                            {opacity: minu_opacity, transform: [{translateX: minus_x}]}
                         ]}>
                             <Button icon="minus" onPress={this.subtract} large={large} button_style={button_style} />
                         </Animated.View>   
@@ -368,7 +402,7 @@ class Counter extends Component {
                         style.input_container, 
                         {width: this.min_width}, 
                         {
-                            opacity: this.input_opacity, 
+                            opacity: input_opacity, 
                             transform: [{translateX:input_x}],
                             zIndex: input_z_index
                         }
@@ -399,13 +433,13 @@ class Counter extends Component {
                         <Animated.View style={[
                             style.btn_container, 
                             {width: this.btn_width, paddingLeft: 10}, 
-                            {opacity: this.plus_opacity, transform: [{translateX: this.plus_x}]}
+                            {opacity: plus_opacity, transform: [{translateX: this.plus_x}]}
                         ]}>
                         
                             {
                                 (show_arrow)
                                 ?
-                                <Button icon="arrow-left" onPress={this.open} large={large} disabled={(count<=min)} button_style={button_style} />
+                                <Button icon="arrow-left" onPress={this.open} large={large} disabled={disabled} button_style={button_style} />
                                 :
                                 <Button icon="plus" onPress={this.add} large={large} disabled={(count>=max)} button_style={button_style} />
                             }

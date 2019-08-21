@@ -10,7 +10,7 @@ const style = StyleSheet.create({
         height: 38,
         borderRadius: 19,
         backgroundColor: '#57004e',
-        elevation: 4
+        elevation: 0
     },
 
     button_required: {
@@ -25,8 +25,8 @@ const style = StyleSheet.create({
 
     content: {
         position: 'absolute',
-        width: 38,
-        height: 38,
+        width: '100%',
+        height: '100%',
         alignItems: 'center',
         justifyContent: 'center'
     },
