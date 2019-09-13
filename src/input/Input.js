@@ -64,7 +64,9 @@ class Input extends Component {
     value = (value) => {
 
         if (value != undefined) {
-            this.input.value(value);
+            this.setState({
+                text: value
+            });
         } else {
             const { text } = this.state;
             return text;
