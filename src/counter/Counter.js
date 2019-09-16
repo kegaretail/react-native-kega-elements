@@ -357,7 +357,7 @@ class Counter extends Component {
     onInputChange = (value) => {
         if (this.onchange_timeout !== null) {clearTimeout(this.onchange_timeout);}
         this.onchange_timeout = setTimeout(() => {
-            this.change(Number(value));
+            this.change((value === '' ? value : Number(value)));
         }, 500);
     }
 

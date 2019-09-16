@@ -15,31 +15,45 @@ class Input extends Component {
 
 	constructor(props) {
         super(props);
-        this.state = { text: props.value };
+
+        this.state = { 
+            text: props.value,
+            internal: false
+         };
     }
     
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const { value } = nextProps;
-        const { text } = prevState;
+    static getDerivedStateFromProps(props, state) {
+        const { value } = props;
+        const { text, internal } = state;
+
+        if (internal) {
+            return {
+                ...state,
+                text: text,
+                internal: false
+            };
+        }
 
         return {
-            ...prevState,
-            text: (value != text ? value : text)
+            ...state,
+            text: value
         };
-        
-    }
- 
-    shouldComponentUpdate(nextProps, nextState) {
 
+    
+    }
+    
+    shouldComponentUpdate(nextProps, nextState) {
         if (this.props.editable != nextProps.editable) { return true; }
         if (this.state.text != nextState.text) { return true; }
 
-        return false;
+        return true;
     }
 
-
     onChangeText = (text) => {
-        this.setState({text});
+        this.setState({
+            text: text,
+            internal: true
+        });
         this.props.onChangeText(text);
     }
 
@@ -48,10 +62,6 @@ class Input extends Component {
             this.refs.input.clear();
         }
     }
-
-    value = (text) => {
-        this.refs.input.value(text);
-    } 
 
     render() {
 

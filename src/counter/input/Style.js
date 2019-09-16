@@ -18,8 +18,8 @@ const style = StyleSheet.create({
         height: 50,
         borderRadius: 25,
         elevation: 0,
-		borderColor: (Platform.Version < 21 ? '#c8c8c8' : 'rgba(0,0,0,0)'),
-		borderWidth: (Platform.Version < 21 ? StyleSheet.hairlineWidth : 0) 
+		borderColor: '#c8c8c8', //(Platform.Version < 21 ? '#c8c8c8' : 'rgba(0,0,0,0)'),
+		borderWidth: StyleSheet.hairlineWidth //(Platform.Version < 21 ? StyleSheet.hairlineWidth : 0) 
 	},
 
 	container_small: {
