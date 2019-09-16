@@ -41,12 +41,16 @@ class Input extends Component {
     
     onChangeText = (text) => {
 
-        const { regex_allowed } = this.props;
+        const { regex_allowed, formatText } = this.props;
 
         if (regex_allowed) {
             text = text.replace(regex_allowed, "");
         }
         
+        if (formatText) {
+            text = formatText(text);
+        }
+
         this.setState({
             text: text,
             error: false
@@ -303,7 +307,8 @@ Input.propTypes = {
     icon: PropTypes.element,
     iconStyle: ViewPropTypes.style,
     iconRight: PropTypes.bool,
-    custom: PropTypes.string
+    custom: PropTypes.string,
+    formatText: PropTypes.func
 }
 
 Input.defaultProps = {
