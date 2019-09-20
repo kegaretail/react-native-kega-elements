@@ -112,7 +112,8 @@ class Input extends Component {
         const { 
             autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, 
             editable, label, raised,
-            style: props_style, multiline, maxLength = null, required, icon, iconStyle, placeholderTextColor, custom, value, onChangeText,
+            style: props_style, multiline, maxLength = null, required, placeholderTextColor, custom, value, onChangeText,
+            iconRight, iconRightStyle, iconLeft, iconLeftStyle,
             ...restProps
         } = this.props;
 
@@ -238,7 +239,7 @@ class Input extends Component {
                     error && container_error_style,
                     raised && style.raised
                 ]}>
-                    { icon && <View style={[style.icon, iconStyle]}>{icon}</View> }
+                    { iconLeft && <View style={[style.iconLeft, iconLeftStyle]}>{iconLeft}</View> }
                     <TextInput
                         ref={(input) => { this.input = input;}}
                         style={[
@@ -261,7 +262,7 @@ class Input extends Component {
                         {...optional_props}
                         {...restProps}
                     />
-            
+                    { iconRight && <View style={[style.iconRight, iconRightStyle]}>{iconRight}</View> }
                 </View>
                 {
                     required
@@ -304,9 +305,10 @@ Input.propTypes = {
     multiline: PropTypes.bool,
     maxLength: PropTypes.number,
     raised: PropTypes.bool,
-    icon: PropTypes.element,
-    iconStyle: ViewPropTypes.style,
-    iconRight: PropTypes.bool,
+    iconRightStyle: ViewPropTypes.style,
+    iconRight: PropTypes.element,
+    iconLeftStyle: ViewPropTypes.style,
+    iconLeft: PropTypes.element,
     custom: PropTypes.string,
     formatText: PropTypes.func
 }
@@ -366,8 +368,12 @@ const style = StyleSheet.create({
         height: 18,
 	},
 
-    icon: {
+    iconLeft: {
         paddingRight: 5,
+    },
+
+    iconRight: {
+        paddingLeft: 5,
     },
 
     raised: {
@@ -382,6 +388,10 @@ const style = StyleSheet.create({
                 elevation: 2,
             },
         }),
+    },
+
+    error_message: {
+        
     }
 
 });

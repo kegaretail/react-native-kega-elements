@@ -54,7 +54,7 @@ class FormView extends React.Component {
 						regex_validate={/[0-9]{12}$/g}
 						error_message="Verkeerde input"
 						required={true} 
-						icon={<Icon color="#333333" name="home" size={18} />}
+						iconLeft={<Icon color="#333333" name="home" size={18} />}
 					/>
 					<View style={{height: 14}} />
 					<Button label="Submit" onPress={() => {this.input.validate(); this.input2.validate();}} raised/>
