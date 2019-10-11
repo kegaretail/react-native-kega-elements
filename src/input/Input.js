@@ -379,10 +379,10 @@ const style = StyleSheet.create({
     raised: {
         ...Platform.select({
             ios: {
-                shadowColor: 'rgba(0,0,0, .4)',
-                shadowOffset: { height: 1, width: 1 },
-                shadowOpacity: 1,
-                shadowRadius: 1,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.20,
+                shadowRadius: 1.41,
             },
             android: {
                 elevation: 2,
