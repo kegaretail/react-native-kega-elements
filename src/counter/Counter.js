@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 
 import {
+    View,
     Animated,
     StyleSheet 
 }                           from 'react-native';
@@ -9,18 +10,24 @@ import {
 import Input                from './input/Input';
 import Button               from './button/Button';
 
+import { ThemeContext }     from '../Theme';
+
 class Counter extends Component {
 
 	constructor(props) {
         super(props);
 
-        const { large, animated, value, open, zero_is_value, empty_is_value } = props;
+        const { large, animated, value, open, zero_is_value, space_between } = props;
+        
+        this.input_width = (large ? 80 : 60);
+        this.space_between = (space_between !== null ? space_between : (large ? 10 : 10));
+        this.btn_width = (large ? 50 : 38);
 
-        this.btn_width = (large ? 67 : 55);
-        this.max_width = (large ? 234 : 180);
-        this.min_width = (large ? 100 : 70);
+        this.max_width = (this.btn_width*2) + this.input_width + (this.space_between*2);
 
-        let start_width = this.min_width;
+        this.min_width = this.btn_width;
+
+        let start_width = (value === 0 ? this.min_width : this.input_width);
         let start_input_x = 0;
         let start_minus_x = (start_width-this.btn_width);
 
@@ -46,7 +53,7 @@ class Counter extends Component {
                 count: value,
                 width: new Animated.Value(this.max_width),
                 minus_x: new Animated.Value(0),
-                input_x: new Animated.Value(this.btn_width),
+                input_x: new Animated.Value(this.btn_width+this.space_between),
                 input_opacity: new Animated.Value(1),
                 minu_opacity: new Animated.Value(1),
                 plus_opacity: new Animated.Value(1),
@@ -205,7 +212,7 @@ class Counter extends Component {
 
         Animated.parallel([
             Animated.spring(width, { toValue: this.max_width }),
-            Animated.spring(input_x, { toValue: this.btn_width }),
+            Animated.spring(input_x, { toValue: this.btn_width+this.space_between }),
             Animated.spring(minus_x, { toValue: 0 }),
             Animated.timing(minu_opacity, { toValue: 1 }),
             Animated.spring(input_opacity, { toValue: 1 }),
@@ -245,11 +252,13 @@ class Counter extends Component {
             input_opacity_value = (count === '' || count === 0 ? 0 : 1);
         }
 
+        let new_width = (count === 0 ? this.min_width : this.input_width);
+
         Animated.parallel([
-            Animated.spring(width, { toValue: this.min_width }),
+            Animated.spring(width, { toValue: new_width }),
             Animated.spring(input_x, { toValue: 0 }),
             Animated.spring(input_opacity, { toValue: input_opacity_value }),
-            Animated.spring(minus_x, { toValue: (this.min_width-this.btn_width)}),
+            Animated.spring(minus_x, { toValue: (new_width-this.btn_width)}),
             Animated.spring(minu_opacity, { toValue: 0}),
             Animated.spring(plus_opacity, { toValue: plus_opacity_value}),
         ]).start(() => {
@@ -283,43 +292,13 @@ class Counter extends Component {
             if (this.input_container) {
                 this.input_container.setNativeProps({ style: { zIndex: 999 } });
             }
-/*
-            this.minu_opacity = width.interpolate({
-                inputRange: [this.min_width, this.max_width],
-                outputRange: [0, 1]
-            })
 
-            this.input_opacity = width.interpolate({
-                inputRange: [this.min_width, this.max_width],
-                outputRange: [1, 1]
-            });
-
-            this.plus_opacity = width.interpolate({
-                inputRange: [this.min_width, this.max_width],
-                outputRange: [0, 1]
-            });
-*/
         } else {
   
             if (this.input_container) {
                 this.input_container.setNativeProps({ style: { zIndex: 1 } });
             }
-/*
-            this.minu_opacity = this.state.width.interpolate({
-                inputRange: [this.min_width, this.max_width],
-                outputRange: [0, 1]
-            });
-    
-            this.input_opacity = this.state.width.interpolate({
-                inputRange: [this.min_width, this.max_width],
-                outputRange: [0, 1]
-            });
-    
-            this.plus_opacity = this.state.width.interpolate({
-                inputRange: [this.min_width, this.max_width],
-                outputRange: [1, 1]
-            });
-*/
+
         }
     }
 
@@ -362,22 +341,50 @@ class Counter extends Component {
     }
 
     render() {
-
         const { count, width, input_x, minus_x, input_editable, show_arrow, input_z_index, input_opacity, minu_opacity, plus_opacity } = this.state;
-        const { large, animated, button_style, max, min, showmax, disabled, input, target } = this.props;
+        const { large, animated, button_style=null, max, min, showmax, disabled, input, target } = this.props;
+
+        if (button_style !== null) {
+            console.warn('The counter is update, check al counters in this app (button_style is deprecated)')
+        }
+
+        const { theme } = this.context
 
         let editable = (animated ? input_editable : true);
         if (!input) {
             editable = false;
         }
 
-        let input_background_color = "#ffffff";
-        if (target != null && count > target) {
-            input_background_color = "#edcaca";
-        }
-        
-        return (
+        let buttonRippleColor = '#fff';
 
+        let theme_button_style = {}
+        if (theme && theme.counter && theme.counter.button) {
+            const { backgroundColor, color, borderRadius, rippleColor } = theme.counter.button;
+ 
+            if (backgroundColor) { theme_button_style.backgroundColor = backgroundColor }
+            if (color) { theme_button_style.color = color }
+            if (borderRadius) { theme_button_style.borderRadius = borderRadius }
+
+            if (rippleColor) { buttonRippleColor = rippleColor; }
+        }
+
+        let theme_input_style = {}
+        if (theme && theme.counter && theme.counter.input) {
+            const { backgroundColor, color, borderRadius, borderColor, borderWidth, overTargetBackgroundColor } = theme.counter.input;
+
+            if (backgroundColor) { theme_input_style.backgroundColor = backgroundColor; }
+            if (color) { theme_input_style.color = color; }
+            if (borderRadius) { theme_input_style.borderRadius = borderRadius; }
+            if (borderColor) { theme_input_style.borderColor = borderColor; }
+            if (borderWidth) { theme_input_style.borderWidth = borderWidth; }
+
+            if (target != null && count > target) {
+                theme_input_style.backgroundColor = overTargetBackgroundColor;
+            }
+
+        }
+
+        return (
             <Animated.View style={[style.container, {width: width}]} >
 
                 {
@@ -385,10 +392,10 @@ class Counter extends Component {
                     ?
                         <Animated.View style={[
                             style.btn_container,
-                            {width: this.btn_width, paddingRight: 10}, 
+                            {width: this.btn_width}, 
                             {opacity: minu_opacity, transform: [{translateX: minus_x}]}
                         ]}>
-                            <Button icon="minus" onPress={this.subtract} large={large} button_style={button_style} />
+                            <Button icon="minus" onPress={this.subtract} large={large} button_style={theme_button_style} rippleColor={buttonRippleColor} />
                         </Animated.View>   
                     :
                         null
@@ -400,16 +407,19 @@ class Counter extends Component {
                     }} 
                     style={[
                         style.input_container, 
-                        {width: this.min_width}, 
+                        {width: this.input_width}, 
                         {
                             opacity: input_opacity, 
                             transform: [{translateX:input_x}],
-                            zIndex: input_z_index
+                            zIndex: input_z_index,
                         }
                     ]}
-                >
+                >   
                     <Input 
-                        style={ style.input } 
+                        style={[
+                            style.input,
+                            theme_input_style
+                        ]} 
                         textAlign="center" 
                         keyboardType="numeric" 
                         value={String(count)} 
@@ -423,7 +433,7 @@ class Counter extends Component {
                         target={target}
                         showmax={showmax}
                         disabled={disabled}
-                        backgroundColor={input_background_color}
+                        //backgroundColor={input_background_color}
                     />
                 </Animated.View>   
 
@@ -432,16 +442,16 @@ class Counter extends Component {
                     ?
                         <Animated.View style={[
                             style.btn_container, 
-                            {width: this.btn_width, paddingLeft: 10}, 
+                            {width: this.btn_width, alignItems: 'flex-end'}, 
                             {opacity: plus_opacity, transform: [{translateX: this.plus_x}]}
                         ]}>
                         
                             {
                                 (show_arrow)
                                 ?
-                                <Button icon="arrow-left" onPress={this.open} large={large} disabled={disabled} button_style={button_style} />
+                                <Button icon="arrow-left" onPress={this.open} large={large} disabled={disabled} button_style={theme_button_style} rippleColor={buttonRippleColor} />
                                 :
-                                <Button icon="plus" onPress={this.add} large={large} disabled={(count>=max)} button_style={button_style} />
+                                <Button icon="plus" onPress={this.add} large={large} disabled={(count>=max)} button_style={theme_button_style} rippleColor={buttonRippleColor} />
                             }
         
                         </Animated.View>
@@ -472,11 +482,12 @@ Counter.propTypes = {
     animated: PropTypes.bool,
     zero_is_value: PropTypes.bool,
     empty_is_value: PropTypes.bool,
-    button_style: PropTypes.object,
+    //button_style: PropTypes.object,
     disabled: PropTypes.bool,
     showmax: PropTypes.bool,
     open: PropTypes.bool,
     input: PropTypes.bool,
+    space_between: PropTypes.number
 }
 
 Counter.defaultProps = {
@@ -493,40 +504,40 @@ Counter.defaultProps = {
     animated: true,
     zero_is_value: false,
     empty_is_value: false,
-    button_style: {background:'#000000', color:'#ffffff'},
+    //button_style: {background:'#000000', color:'#ffffff'},
     disabled: false,
     showmax: false,
     open: false,
     input: true,
+    space_between: null
 };
 
+Counter.contextType = ThemeContext;
+
 const style = StyleSheet.create({
+
     container: {
-		justifyContent: 'center'
+        
     },
 
     btn_container: {
         position: 'absolute',
-        width: 50,
-        padding: 5,
+        padding: 0,
         justifyContent: 'center',
-        alignItems: 'center',
         zIndex: 10
     },
 
     input_container: {
-        position: 'relative',
         justifyContent: 'center',
 		alignItems: 'center',
-        width: 70,
-        padding: 5,
+        padding: 0,
         zIndex: 1
     },
 
 	input: {
-        width: '100%',
-        marginLeft: 14,
-        marginRight: 14,
+        //width: '100%',
+        //marginLeft: 14,
+        //marginRight: 14,
 	}
 });
 

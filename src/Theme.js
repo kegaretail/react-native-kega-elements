@@ -38,6 +38,11 @@ const DefaultTheme = {
         borderRadius: 8,
         padding: 15,
 		elevation: 2
+    },
+
+    counter: {
+        button: { backgroundColor: '#57004e' , color: '#fff' },
+        input: { backgroundColor: '#fff' , color: '#666666', overTargetBackgroundColor: '#edcaca' }
     }
 };
 

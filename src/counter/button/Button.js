@@ -15,13 +15,15 @@ import style                from './Style';
 class Button extends Component {
     
     render() {
-        const { label, icon, onPress, large, button_style, disabled } = this.props;
+        const { label, icon, onPress, large, button_style, disabled, rippleColor } = this.props;
 
         let button_style_array = [style.button];
         if (large) {
             button_style_array.push(style.button_large);
         }
 
+        button_style_array.push(button_style);
+        /*
         if (button_style != undefined && button_style.background) {
             button_style_array.push({backgroundColor:button_style.background});
         }
@@ -29,6 +31,7 @@ class Button extends Component {
         if (disabled && button_style != undefined && button_style.disabled_background) {
             button_style_array.push({backgroundColor:button_style.disabled_background, elevation:0});
         }
+        */
 
         let icon_color = '#ffffff';
         if (button_style != undefined && button_style.color) {
@@ -41,7 +44,7 @@ class Button extends Component {
                     disabled={disabled}
                     activeOpacity={0.6}
                     borderless={false}
-                    color="#fff"
+                    color={rippleColor}
                     onPress={ onPress }
                     hitSlop={{top:20, right:20, bottom:20, left:20}}
                 >
@@ -59,14 +62,14 @@ Button.propTypes = {
     icon: PropTypes.string,
     onPress: PropTypes.func,
     large: PropTypes.bool,
-    background_color: PropTypes.string,
+    rippleColor: PropTypes.string,
     disabled: PropTypes.bool,
 }
 
 Button.defaultProps = {
     icon: 'help',
     onPress: () => {},
-    background_color: "",
+    rippleColor: "#fff",
     disabled: false
 };
 

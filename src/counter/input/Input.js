@@ -64,8 +64,9 @@ class Input extends Component {
     }
 
     render() {
-
-        const { autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, small, onTouchStart, editable, onPress, onBlur, selectTextOnFocus, maxLength, style: props_style, showmax, max, disabled, target, backgroundColor} = this.props;
+        const { 
+            autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, small, editable, 
+            onPress, onBlur, selectTextOnFocus, maxLength, style: props_style, showmax, max, disabled, target} = this.props;
         const { text } = this.state;
 
         let container_style = [style.container];
@@ -74,9 +75,6 @@ class Input extends Component {
         }
         container_style.push(props_style);
 
-        if (backgroundColor) {
-            container_style.push({backgroundColor: backgroundColor});
-        }
 
         if (disabled) {
             container_style.push({
@@ -159,7 +157,7 @@ Input.propTypes = {
     autoFocus: PropTypes.bool,
     placeholder: PropTypes.string,
     selectionColor: PropTypes.string,
-    backgroundColor: PropTypes.string,
+    //backgroundColor: PropTypes.string,
     returnKeyType: PropTypes.string,
     onChangeText: PropTypes.func,
     onSubmitEditing: PropTypes.func,
@@ -182,7 +180,7 @@ Input.defaultProps = {
     autoFocus: false,
     placeholder: '',
     selectionColor: 'rgba(70, 0, 62, 0.1)',
-    backgroundColor: '#ffffff',
+    //backgroundColor: '#ffffff',
     returnKeyType: 'done',
     onChangeText: (text) => {},
     onSubmitEditing: () => {},
