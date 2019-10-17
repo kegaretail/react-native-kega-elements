@@ -40,7 +40,7 @@ class Button extends Component {
                 <Touchable
                     disabled={disabled}
                     activeOpacity={0.6}
-                    borderless={true}
+                    borderless={false}
                     color="#fff"
                     onPress={ onPress }
                     hitSlop={{top:20, right:20, bottom:20, left:20}}
