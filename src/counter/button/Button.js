@@ -49,7 +49,7 @@ class Button extends Component {
                     hitSlop={{top:20, right:20, bottom:20, left:20}}
                 >
                     <View style={style.content}>
-                        <Icon name={ icon } color={icon_color} size={(large ? 24 : 12)} />
+                        <Icon name={ icon } color={icon_color} size={(large ? 24 : 14)} />
                     </View>
                 </Touchable>
             </View>
