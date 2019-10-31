@@ -212,7 +212,6 @@ Button.defaultProps = {
 const style = StyleSheet.create({
 
     container: {
-        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 25,
