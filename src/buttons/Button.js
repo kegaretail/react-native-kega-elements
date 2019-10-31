@@ -226,7 +226,6 @@ const style = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         height: '100%',
-        width: '100%',
         backgroundColor: '#5bb4a5',
     },
 
