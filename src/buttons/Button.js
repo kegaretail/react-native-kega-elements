@@ -150,7 +150,7 @@ class Button extends Component {
                             { 
                                 (!iconRight && !loading) 
                                 && 
-                                <View style={{marginRight: 5}}> { icon } </View> 
+                                <View style={{marginLeft: 5}}> { icon } </View> 
                             }
             
                             {
