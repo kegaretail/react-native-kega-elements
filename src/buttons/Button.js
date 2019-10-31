@@ -47,7 +47,7 @@ class Button extends Component {
         // Get style from theme
         if (theme && theme.buttons && theme.buttons[type]) {
             const context_style = theme.buttons[type];
-            const { backgroundColor, borderColor, borderRadius, borderWidth, color, fontSize, rippleColor, height, paddingLeft, paddingRight } = context_style;
+            const { backgroundColor, borderColor, borderRadius, borderWidth, color, fontSize, fontWeight, rippleColor, height, width, paddingLeft, paddingRight } = context_style;
 
             if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
             if (borderColor) { inner_container_style.borderColor = borderColor; }
@@ -62,10 +62,12 @@ class Button extends Component {
            
             if (color) { label_style.color = color; }
             if (fontSize) { label_style.fontSize = fontSize; }
+            if (fontWeight) { label_style.fontWeight = fontWeight; }
 
             if (rippleColor) { buttonRippleColor = rippleColor; }
             
             if (height) { container_style.height = height; }
+            if (width) { container_style.width = width; }
 
         }
 
@@ -75,7 +77,7 @@ class Button extends Component {
         
         // Override button style from props
         if (prop_style) {
-            const { backgroundColor, borderColor, borderWidth, borderRadius, color, fontSize, rippleColor, height, paddingLeft, paddingRight, ...prop_style_rest} = prop_style;
+            const { backgroundColor, borderColor, borderWidth, borderRadius, color, fontSize, fontWeight, rippleColor, height, width, paddingLeft, paddingRight, ...prop_style_rest} = prop_style;
 
             if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
             if (borderColor) { inner_container_style.borderColor = borderColor; }
@@ -90,10 +92,12 @@ class Button extends Component {
 
             if (color) { label_style.color = color; }
             if (fontSize) { label_style.fontSize = fontSize; }
+            if (fontWeight) { label_style.fontWeight = fontWeight; }
 
             if (rippleColor) { buttonRippleColor = rippleColor; }
 
             if (height) { container_style.height = height; }
+            if (width) { container_style.width = width; }
 
         }
 
@@ -119,42 +123,44 @@ class Button extends Component {
         let useForeground = ( inner_container_style.borderRadius > 0 );
 
         return (
-            <View style={[
-                style.container, 
-                is_raised && style.raised,
-                container_style
-            ]}>
-                <Touchable
-					disabled={disabled}
-					onPress={onPress}
-					color={buttonRippleColor}
-					activeOpacity={0.4}
-					borderless={borderless}
-                    useForeground={useForeground}
-                    ripple={ripple}
-                    style={{width: '100%'}} // Android 4.4 fix
-				>
-                    <ViewComponent 
-                        style={[
-                            style.container, 
-                            style.inner_container,
-                            inner_container_style
-                        ]}
-                        {...gradientProps}
-                    >   
-                        { (!iconRight && !loading) && icon }
-          
-                        {
-							loading
-							?
-							<ActivityIndicator size="small" color={(label_style.color ? label_style.color : '#fff')}/>
-							:
-							<Text style={[ style.label, label_style ]}> { label } </Text>
-						}
+            <View style={{flexDirection: 'row'}}>
+                <View style={[
+                    style.container, 
+                    is_raised && style.raised,
+                    container_style
+                ]}>
+                    <Touchable
+                        disabled={disabled}
+                        onPress={onPress}
+                        color={buttonRippleColor}
+                        activeOpacity={0.4}
+                        borderless={borderless}
+                        useForeground={useForeground}
+                        ripple={ripple}
+                        style={{width: '100%'}} // Android 4.4 fix
+                    >
+                        <ViewComponent 
+                            style={[
+                                style.container, 
+                                style.inner_container,
+                                inner_container_style
+                            ]}
+                            {...gradientProps}
+                        >   
+                            { (!iconRight && !loading) && icon }
             
-                        { (iconRight && !loading) && icon }
-                    </ViewComponent>
-                </Touchable>
+                            {
+                                loading
+                                ?
+                                <ActivityIndicator size="small" color={(label_style.color ? label_style.color : '#fff')}/>
+                                :
+                                <Text style={[ style.label, label_style ]}> { label } </Text>
+                            }
+                
+                            { (iconRight && !loading) && icon }
+                        </ViewComponent>
+                    </Touchable>
+                </View>
             </View>
         );
 
@@ -221,6 +227,7 @@ const style = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         height: '100%',
+        width: '100%',
         backgroundColor: '#5bb4a5',
     },
 
