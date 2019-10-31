@@ -147,7 +147,11 @@ class Button extends Component {
                             ]}
                             {...gradientProps}
                         >   
-                            { (!iconRight && !loading) && icon }
+                            { 
+                                (!iconRight && !loading) 
+                                && 
+                                <View style={{marginRight: 5}}> { icon } </View> 
+                            }
             
                             {
                                 loading
@@ -157,7 +161,11 @@ class Button extends Component {
                                 <Text style={[ style.label, label_style ]}> { label } </Text>
                             }
                 
-                            { (iconRight && !loading) && icon }
+                            { 
+                                (iconRight && !loading) 
+                                && 
+                                <View style={{marginRight: 5}}> { icon } </View> 
+                            }
                         </ViewComponent>
                     </Touchable>
                 </View>
@@ -237,7 +245,8 @@ const style = StyleSheet.create({
 		color: '#ffffff',
 		textAlign: 'center',
         padding: 8,
-
+        paddingLeft: 0,
+        paddingRight: 0
     }, 
 
     raised: {
