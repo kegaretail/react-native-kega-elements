@@ -19,7 +19,7 @@ class Button extends Component {
     render() {
 
         const { 
-            custom, label, disabled, raised, borderRadius, ripple, rippleColor, icon, 
+            custom, label, disabled, raised, borderRadius, ripple, rippleColor, icon=null, 
             iconRight, onPress, ViewComponent = View, gradientProps, full, style: prop_style,
             contained, outlined, text,loading
         } = this.props;
@@ -119,6 +119,8 @@ class Button extends Component {
             
         } 
 
+
+
         let borderless = ( inner_container_style.borderRadius > 0 );
         let useForeground = ( inner_container_style.borderRadius > 0 );
 
@@ -148,9 +150,11 @@ class Button extends Component {
                             {...gradientProps}
                         >   
                             { 
-                                (!iconRight && !loading) 
+                                (icon !== null && !iconRight && !loading) 
                                 && 
-                                <View style={{marginLeft: 5}}> { icon } </View> 
+                                <View style={{marginRight: 5}}> 
+                                { icon } 
+                                </View> 
                             }
             
                             {
@@ -162,9 +166,11 @@ class Button extends Component {
                             }
                 
                             { 
-                                (iconRight && !loading) 
+                                (icon !== null && iconRight && !loading) 
                                 && 
-                                <View style={{marginRight: 5}}> { icon } </View> 
+                                <View style={{marginLeft: 5}}> 
+                                { icon } 
+                                </View> 
                             }
                         </ViewComponent>
                     </Touchable>
