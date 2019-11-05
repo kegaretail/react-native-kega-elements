@@ -334,10 +334,17 @@ class Counter extends Component {
     }
 
     onInputChange = (value) => {
-        if (this.onchange_timeout !== null) {clearTimeout(this.onchange_timeout);}
-        this.onchange_timeout = setTimeout(() => {
+        const { open } = this.props;
+        
+        if (open) {
             this.change((value === '' ? value : Number(value)));
-        }, 500);
+        } else {
+            if (this.onchange_timeout !== null) {clearTimeout(this.onchange_timeout);}
+            this.onchange_timeout = setTimeout(() => {
+                this.change((value === '' ? value : Number(value)));
+            }, 500);
+        }
+       
     }
 
     render() {
