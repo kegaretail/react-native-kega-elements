@@ -149,7 +149,7 @@ class Input extends Component {
         // Get style from theme
         if (theme && theme.inputs && theme.inputs[type]) {
             const context_style = theme.inputs[type];
-            const { backgroundColor, borderRadius, borderWidth, borderColor, color, fontSize, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = context_style;
+            const { backgroundColor, borderRadius, borderWidth, borderColor, height, color, fontSize, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = context_style;
 
             if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
             if (borderRadius !== undefined) { container_style.borderRadius = borderRadius; }
@@ -165,6 +165,15 @@ class Input extends Component {
 
             if (color) { input_style.color = color; }
             if (fontSize) { input_style.fontSize = fontSize; }
+            if (height) { 
+                container_style.height = height;
+
+                if (height > 50) {
+                    input_style.height = (height-20); 
+                    input_style.textAlignVertical = 'top';
+                } 
+         
+            }
 
             if (labelColor) { label_style.color = labelColor; }
             if (lableFontSize) { label_style.fontSize = lableFontSize; }
@@ -174,7 +183,6 @@ class Input extends Component {
         // Props override
         if (selectionColor) { selection_color = selectionColor; }
         if (placeholderTextColor) { placeholder_text_color = placeholderTextColor; }
-
 
 
         // Get style from props
@@ -202,9 +210,7 @@ class Input extends Component {
                 if (height > 50) {
                     input_style.height = (height-20); 
                     input_style.textAlignVertical = 'top';
-                } else{
-                    input_style.height = height;
-                }
+                } 
          
             }
             
@@ -338,13 +344,14 @@ const style = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		paddingTop: 10,
-		paddingBottom: 10,
+		paddingTop: 0,
+		paddingBottom: 0,
 		paddingLeft: 15,
 		paddingRight: 15,
 		backgroundColor: '#ffffff',
         height: 50,
         borderRadius: 8,
+        overflow: 'hidden'
 	},
 
 	label_container: {
@@ -353,13 +360,13 @@ const style = StyleSheet.create({
 	}, 
 
 	label: {
-		fontSize: 12
+        fontSize: 12,
 	},
 
 	input: {
 		borderWidth: 0, 
         flex: 1,
-        height: 50,
+        height: '100%',
 	},
 
 	error_container: {
