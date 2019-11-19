@@ -40,7 +40,6 @@ class Input extends Component {
     }
     
     onChangeText = (text) => {
-
         const { regex_allowed, formatText } = this.props;
 
         if (regex_allowed) {
@@ -85,15 +84,19 @@ class Input extends Component {
     }
 
     validate = () => {
-
-        const { required } = this.props;
+        const { required, onValidate=null } = this.props;
         const { text } = this.state;
 
         if (!required) { return true; }
 
-        const error = (text == '');
+        let error = (text == '');
 
-        this.error(error);
+        if (onValidate !== null) {
+            const { error, message='' } = onValidate(text);
+            this.error(error, message);
+        } else {
+            this.error(error);
+        }
 
         return !error;
     }
@@ -250,7 +253,7 @@ class Input extends Component {
                         ref={(input) => { this.input = input;}}
                         style={[
                             style.input,
-                            input_style
+                            //input_style
                         ]}
                         onChangeText={this.onChangeText}
                         onSubmitEditing={ onSubmitEditing }
@@ -301,6 +304,7 @@ Input.propTypes = {
     returnKeyType: PropTypes.string,
     onChangeText: PropTypes.func,
     onSubmitEditing: PropTypes.func,
+    onValidate: PropTypes.func,
     textAlign: PropTypes.string,
     keyboardType: PropTypes.string,
     value: PropTypes.string,
@@ -326,6 +330,7 @@ Input.defaultProps = {
     returnKeyType: 'done',
     onChangeText: (text) => {},
     onSubmitEditing: () => {},
+    onValidate: null,
     style: {},
     textAlign: 'left',
     keyboardType: 'default',
@@ -351,7 +356,7 @@ const style = StyleSheet.create({
 		backgroundColor: '#ffffff',
         height: 50,
         borderRadius: 8,
-        overflow: 'hidden'
+        //overflow: 'hidden'
 	},
 
 	label_container: {
@@ -367,6 +372,7 @@ const style = StyleSheet.create({
 		borderWidth: 0, 
         flex: 1,
         height: '100%',
+        padding: 0
 	},
 
 	error_container: {
