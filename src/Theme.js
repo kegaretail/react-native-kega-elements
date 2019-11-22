@@ -68,8 +68,12 @@ class ThemeProvider extends React.Component {
     render() {
         const { children, theme } = this.props;
         
-        Theme.merge(theme);
-
+        if (typeof theme === "function") {
+            Theme.merge(theme());
+        } else {
+            Theme.merge(theme);
+        }
+        
         return (
             <ThemeContext.Provider
                 value={{
@@ -83,7 +87,7 @@ class ThemeProvider extends React.Component {
 }
   
 ThemeProvider.propTypes = {
-    theme: PropTypes.object,
+    theme: PropTypes.oneOfType([ PropTypes.object, PropTypes.func]),
     children: PropTypes.node.isRequired,
 };
 
