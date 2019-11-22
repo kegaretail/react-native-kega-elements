@@ -27,7 +27,7 @@ class Counter extends Component {
 
         this.min_width = this.btn_width;
 
-        let start_width = (value === 0 ? this.min_width : this.input_width);
+        let start_width = (value === 0 && !zero_is_value ? this.min_width : this.input_width);
         let start_input_x = 0;
         let start_minus_x = (start_width-this.btn_width);
 
@@ -252,7 +252,7 @@ class Counter extends Component {
             input_opacity_value = (count === '' || count === 0 ? 0 : 1);
         }
 
-        let new_width = (count === 0 ? this.min_width : this.input_width);
+        let new_width = (count === 0 && !zero_is_value ? this.min_width : this.input_width);
 
         Animated.parallel([
             Animated.spring(width, { toValue: new_width }),
@@ -516,7 +516,8 @@ Counter.defaultProps = {
     showmax: false,
     open: false,
     input: true,
-    space_between: null
+    space_between: null,
+
 };
 
 Counter.contextType = ThemeContext;
@@ -524,7 +525,7 @@ Counter.contextType = ThemeContext;
 const style = StyleSheet.create({
 
     container: {
-        
+
     },
 
     btn_container: {
