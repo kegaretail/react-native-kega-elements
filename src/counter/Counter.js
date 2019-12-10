@@ -349,7 +349,7 @@ class Counter extends Component {
 
     render() {
         const { count, width, input_x, minus_x, input_editable, show_arrow, input_z_index, input_opacity, minu_opacity, plus_opacity } = this.state;
-        const { large, animated, button_style=null, max, min, showmax, disabled, input, target } = this.props;
+        const { large, animated, button_style=null, max, min, showmax, disabled, input, target, maxInputLength } = this.props;
 
         if (button_style !== null) {
             console.warn('The counter is update, check al counters in this app (button_style is deprecated)')
@@ -440,6 +440,7 @@ class Counter extends Component {
                         target={target}
                         showmax={showmax}
                         disabled={disabled}
+                        maxLength={maxInputLength}
                         //backgroundColor={input_background_color}
                     />
                 </Animated.View>   
@@ -494,7 +495,8 @@ Counter.propTypes = {
     showmax: PropTypes.bool,
     open: PropTypes.bool,
     input: PropTypes.bool,
-    space_between: PropTypes.number
+    space_between: PropTypes.number,
+    maxInputLength: PropTypes.number,
 }
 
 Counter.defaultProps = {
@@ -517,6 +519,7 @@ Counter.defaultProps = {
     open: false,
     input: true,
     space_between: null,
+    maxInputLength: 3
 
 };
 
