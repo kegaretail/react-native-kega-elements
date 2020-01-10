@@ -51,7 +51,7 @@ class Input extends Component {
 
     onChangeText = (text) => {
 		
-		if (!/(^$)|(^[0-9]{0,2}?$)/.test(text)) {
+		if (!/(^$)|(^[0-9]{0,5}?$)/.test(text)) {
             return false;
         }
 		
