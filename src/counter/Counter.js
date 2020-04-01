@@ -342,7 +342,7 @@ class Counter extends Component {
             if (this.onchange_timeout !== null) {clearTimeout(this.onchange_timeout);}
             this.onchange_timeout = setTimeout(() => {
                 this.change((value === '' ? value : Number(value)));
-            }, 500);
+            }, 1500);
         }
        
     }

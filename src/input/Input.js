@@ -253,7 +253,7 @@ class Input extends Component {
                         ref={(input) => { this.input = input;}}
                         style={[
                             style.input,
-                            //input_style
+                            input_style
                         ]}
                         onChangeText={this.onChangeText}
                         onSubmitEditing={ onSubmitEditing }
