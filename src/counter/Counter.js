@@ -211,12 +211,12 @@ class Counter extends Component {
         onOpen();
 
         Animated.parallel([
-            Animated.spring(width, { toValue: this.max_width }),
-            Animated.spring(input_x, { toValue: this.btn_width+this.space_between }),
-            Animated.spring(minus_x, { toValue: 0 }),
-            Animated.timing(minu_opacity, { toValue: 1 }),
-            Animated.spring(input_opacity, { toValue: 1 }),
-            Animated.timing(plus_opacity, { toValue: 1 }),
+            Animated.spring(width, { toValue: this.max_width, useNativeDriver:false }),
+            Animated.spring(input_x, { toValue: this.btn_width+this.space_between, useNativeDriver:false }),
+            Animated.spring(minus_x, { toValue: 0, useNativeDriver:false }),
+            Animated.timing(minu_opacity, { toValue: 1, useNativeDriver:false }),
+            Animated.spring(input_opacity, { toValue: 1, useNativeDriver:false }),
+            Animated.timing(plus_opacity, { toValue: 1, useNativeDriver:false }),
         ]).start(() => {
         
         });
@@ -255,12 +255,12 @@ class Counter extends Component {
         let new_width = (count === 0 && !zero_is_value ? this.min_width : this.input_width);
 
         Animated.parallel([
-            Animated.spring(width, { toValue: new_width }),
-            Animated.spring(input_x, { toValue: 0 }),
-            Animated.spring(input_opacity, { toValue: input_opacity_value }),
-            Animated.spring(minus_x, { toValue: (new_width-this.btn_width)}),
-            Animated.spring(minu_opacity, { toValue: 0}),
-            Animated.spring(plus_opacity, { toValue: plus_opacity_value}),
+            Animated.spring(width, { toValue: new_width, useNativeDriver:false }),
+            Animated.spring(input_x, { toValue: 0, useNativeDriver:false }),
+            Animated.spring(input_opacity, { toValue: input_opacity_value, useNativeDriver:false }),
+            Animated.spring(minus_x, { toValue: (new_width-this.btn_width), useNativeDriver:false}),
+            Animated.spring(minu_opacity, { toValue: 0, useNativeDriver:false}),
+            Animated.spring(plus_opacity, { toValue: plus_opacity_value, useNativeDriver:false}),
         ]).start(() => {
 
             if (zero_is_value || empty_is_value) {
