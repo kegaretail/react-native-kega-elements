@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 
 import {
-    View,
     Animated,
     StyleSheet 
 }                           from 'react-native';
@@ -18,7 +17,7 @@ class Counter extends Component {
         super(props);
 
         const { large, animated, value, open, zero_is_value, space_between } = props;
-        
+
         this.input_width = (large ? 80 : 60);
         this.space_between = (space_between !== null ? space_between : (large ? 10 : 10));
         this.btn_width = (large ? 50 : 38);
@@ -89,24 +88,6 @@ class Counter extends Component {
 
     }
 
-    static getDerivedStateFromProps(props, state) {
-        
-        let count = state.count;
-        let prev_prop_count = state.prev_prop_count;
-        if (props.value != state.prev_prop_count) {
-            count = props.value;
-            prev_prop_count = count;
-        }
-
-        const new_state = {
-            ...state,
-            count: count,
-            prev_prop_count: prev_prop_count
-        }
-
-        return new_state;
-    }
-
     componentWillUnmount() {
         const { count, width, minus_x, input_x, opened } = this.state;
         const { onClosed } = this.props;
@@ -120,6 +101,19 @@ class Counter extends Component {
         if (onClosed && opened) {
             onClosed(count);
         }
+    }
+
+    componentDidUpdate(prevProps) {
+        const { value } = this.props;
+
+        if (value !== prevProps.value) {
+            const count = ( value !== '' ? Number(value) : value );
+
+            this.setState({ count: count }, () => {
+                this.close();
+            });
+        }
+
     }
 
     add = () => {
@@ -335,6 +329,8 @@ class Counter extends Component {
 
     onInputChange = (value) => {
         const { open } = this.props;
+
+        console.log('onInputChange', value);
         
         if (open) {
             this.change((value === '' ? value : Number(value)));
@@ -354,6 +350,8 @@ class Counter extends Component {
         if (button_style !== null) {
             console.warn('The counter is update, check al counters in this app (button_style is deprecated)')
         }
+
+        console.log('--------> ', count);
 
         const { theme } = this.context
 
