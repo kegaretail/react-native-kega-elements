@@ -106,7 +106,7 @@ class Counter extends Component {
     componentDidUpdate(prevProps) {
         const { value } = this.props;
 
-        if (value !== prevProps.value) {
+        if (value !== prevProps.value && value !== this.state.count) {
             const count = ( value !== '' ? Number(value) : value );
 
             this.setState({ count: count }, () => {
@@ -158,6 +158,8 @@ class Counter extends Component {
         if (animated && input_editable) {
             this.setState({input_editable: false});
         }
+
+        console.log('change ----------> ', value);
 
         this.setState({ count: value }, () => {
             if (animated) { 
@@ -350,8 +352,6 @@ class Counter extends Component {
         if (button_style !== null) {
             console.warn('The counter is update, check al counters in this app (button_style is deprecated)')
         }
-
-        console.log('--------> ', count);
 
         const { theme } = this.context
 
