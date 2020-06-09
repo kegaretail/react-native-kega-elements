@@ -159,8 +159,6 @@ class Counter extends Component {
             this.setState({input_editable: false});
         }
 
-        console.log('change ----------> ', value);
-
         this.setState({ count: value }, () => {
             if (animated) { 
                 if (value == 0) {
