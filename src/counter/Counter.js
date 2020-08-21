@@ -330,8 +330,6 @@ class Counter extends Component {
     onInputChange = (value) => {
         const { open } = this.props;
 
-        console.log('onInputChange', value);
-        
         if (open) {
             this.change((value === '' ? value : Number(value)));
         } else {
