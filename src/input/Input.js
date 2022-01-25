@@ -152,7 +152,7 @@ class Input extends Component {
         // Get style from theme
         if (theme && theme.inputs && theme.inputs[type]) {
             const context_style = theme.inputs[type];
-            const { backgroundColor, borderRadius, borderWidth, borderColor, height, color, fontSize, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize } = context_style;
+            const { backgroundColor, borderRadius, borderWidth, borderColor, height, color, fontSize, fontFamily, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, errorFontFamily, labelColor, labelFontSize, labelFontFamily } = context_style;
 
             if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
             if (borderRadius !== undefined) { container_style.borderRadius = borderRadius; }
@@ -162,12 +162,14 @@ class Input extends Component {
 
             if (errorColor) { error_message_style.color = errorColor; }
             if (errorFontSize) { error_message_style.fontSize = errorFontSize; }
+            if (errorFontFamily) { error_message_style.fontFamily = errorFontFamily; }
 
             if (selectionColor) { selection_color = selectionColor; }
             if (placeholderTextColor) { placeholder_text_color = placeholderTextColor; }
 
             if (color) { input_style.color = color; }
             if (fontSize) { input_style.fontSize = fontSize; }
+            if (fontFamily) { input_style.fontFamily = fontFamily; }
             if (height) { 
                 container_style.height = height;
 
@@ -179,8 +181,8 @@ class Input extends Component {
             }
 
             if (labelColor) { label_style.color = labelColor; }
-            if (lableFontSize) { label_style.fontSize = lableFontSize; }
-
+            if (labelFontSize) { label_style.fontSize = labelFontSize; }
+            if (labelFontFamily) { label_style.fontFamily = labelFontFamily; }
         }
 
         // Props override
@@ -190,7 +192,7 @@ class Input extends Component {
 
         // Get style from props
         if (props_style) {
-            const { backgroundColor, borderRadius, color, fontSize, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, lableFontSize, onChangeText, width } = props_style;
+            const { backgroundColor, borderRadius, color, fontSize, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, labelFontSize, labelFontFamily, onChangeText, width } = props_style;
 
             if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
             if (borderRadius !== undefined) { container_style.borderRadius = borderRadius; }
@@ -207,6 +209,7 @@ class Input extends Component {
 
             if (color) { input_style.color = color; }
             if (fontSize) { input_style.fontSize = fontSize; }
+            if (fontFamily) { input_style.fontFamily = fontFamily; }
             if (height) { 
                 container_style.height = height;
 
@@ -218,7 +221,8 @@ class Input extends Component {
             }
             
             if (labelColor) { label_style.color = labelColor; }
-            if (lableFontSize) { label_style.fontSize = lableFontSize; }
+            if (labelFontSize) { label_style.fontSize = labelFontSize; }
+            if (labelFontFamily) { label_style.fontFamily = labelFontFamily; }
 
             if (width) { root_style.width = width; }
             
@@ -253,7 +257,7 @@ class Input extends Component {
                         ref={(input) => { this.input = input;}}
                         style={[
                             style.input,
-                            input_style
+                            //input_style
                         ]}
                         onChangeText={this.onChangeText}
                         onSubmitEditing={ onSubmitEditing }
@@ -386,7 +390,7 @@ const style = StyleSheet.create({
     },
 
     iconRight: {
-        paddingLeft: 5,
+        paddingLeft: 5
     },
 
     raised: {

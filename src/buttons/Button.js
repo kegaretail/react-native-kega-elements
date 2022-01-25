@@ -47,7 +47,7 @@ class Button extends Component {
         // Get style from theme
         if (theme && theme.buttons && theme.buttons[type]) {
             const context_style = theme.buttons[type];
-            const { backgroundColor, borderColor, borderRadius, borderWidth, color, fontSize, fontWeight, rippleColor, height, width, paddingLeft, paddingRight } = context_style;
+            const { backgroundColor, borderColor, borderRadius, borderWidth, color, fontSize, fontWeight, fontFamily, rippleColor, height, width, paddingLeft, paddingRight } = context_style;
 
             if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
             if (borderColor) { inner_container_style.borderColor = borderColor; }
@@ -63,11 +63,13 @@ class Button extends Component {
             if (color) { label_style.color = color; }
             if (fontSize) { label_style.fontSize = fontSize; }
             if (fontWeight) { label_style.fontWeight = fontWeight; }
+            if (fontFamily) { label_style.fontFamily = fontFamily; }
 
             if (rippleColor) { buttonRippleColor = rippleColor; }
             
             if (height) { container_style.height = height; }
             if (width) { container_style.width = width; }
+
 
         }
 
@@ -93,7 +95,8 @@ class Button extends Component {
             if (color) { label_style.color = color; }
             if (fontSize) { label_style.fontSize = fontSize; }
             if (fontWeight) { label_style.fontWeight = fontWeight; }
-
+            if (fontFamily) { label_style.fontFamily = fontFamily; }
+            
             if (rippleColor) { buttonRippleColor = rippleColor; }
 
             if (height) { container_style.height = height; }
