@@ -192,7 +192,7 @@ class Input extends Component {
 
         // Get style from props
         if (props_style) {
-            const { backgroundColor, borderRadius, color, fontSize, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, labelFontSize, labelFontFamily, onChangeText, width } = props_style;
+            const { backgroundColor, borderRadius, color, fontSize, fontFamily, borderWidth, borderColor, height, selectionColor, placeholderTextColor, errorColor, errorFontSize, errorBorderColor, labelColor, labelFontSize, labelFontFamily, onChangeText, width } = props_style;
 
             if (backgroundColor) { container_style.backgroundColor = backgroundColor; }
             if (borderRadius !== undefined) { container_style.borderRadius = borderRadius; }
@@ -257,7 +257,7 @@ class Input extends Component {
                         ref={(input) => { this.input = input;}}
                         style={[
                             style.input,
-                            //input_style
+                            input_style
                         ]}
                         onChangeText={this.onChangeText}
                         onSubmitEditing={ onSubmitEditing }
