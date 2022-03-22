@@ -79,7 +79,7 @@ class Button extends Component {
         
         // Override button style from props
         if (prop_style) {
-            const { backgroundColor, borderColor, borderWidth, borderRadius, color, fontSize, fontWeight, rippleColor, height, width, paddingLeft, paddingRight, ...prop_style_rest} = prop_style;
+            const { backgroundColor, borderColor, borderWidth, borderRadius, color, fontSize, fontWeight, fontFamily, rippleColor, height, width, paddingLeft, paddingRight, ...prop_style_rest} = prop_style;
 
             if (backgroundColor) { inner_container_style.backgroundColor = backgroundColor; }
             if (borderColor) { inner_container_style.borderColor = borderColor; }
