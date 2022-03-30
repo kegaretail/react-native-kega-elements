@@ -16,13 +16,17 @@ class Counter extends Component {
 	constructor(props) {
         super(props);
 
-        const { large, animated, value, open, zero_is_value, space_between } = props;
+        const { large, animated, value, open, zero_is_value, space_between, disableMin, disablePlus } = props;
 
         this.input_width = (large ? 80 : 60);
         this.space_between = (space_between !== null ? space_between : (large ? 10 : 10));
         this.btn_width = (large ? 50 : 38);
 
-        this.max_width = (this.btn_width*2) + this.input_width + (this.space_between*2);
+        let buttonCount = 2;
+        if (disableMin) { buttonCount -= 1; }
+        if (disablePlus) { buttonCount -= 1; }
+
+        this.max_width = (this.btn_width*buttonCount) + this.input_width + (this.space_between*buttonCount);
 
         this.min_width = this.btn_width;
 
@@ -188,7 +192,7 @@ class Counter extends Component {
 
     open = () => {
         const { width, input_x, minus_x, opened, input_opacity, minu_opacity, plus_opacity } = this.state;
-        const { onOpen } = this.props;
+        const { onOpen, disableMin } = this.props;
 
         this.changeAnimation(this.value_when_clicked);
 
@@ -206,7 +210,7 @@ class Counter extends Component {
 
         Animated.parallel([
             Animated.spring(width, { toValue: this.max_width, useNativeDriver:false }),
-            Animated.spring(input_x, { toValue: this.btn_width+this.space_between, useNativeDriver:false }),
+            Animated.spring(input_x, { toValue: (disableMin ? 0 : this.btn_width+this.space_between), useNativeDriver:false }),
             Animated.spring(minus_x, { toValue: 0, useNativeDriver:false }),
             Animated.timing(minu_opacity, { toValue: 1, useNativeDriver:false }),
             Animated.spring(input_opacity, { toValue: 1, useNativeDriver:false }),
@@ -343,7 +347,7 @@ class Counter extends Component {
 
     render() {
         const { count, width, input_x, minus_x, input_editable, show_arrow, input_z_index, input_opacity, minu_opacity, plus_opacity } = this.state;
-        const { large, animated, button_style=null, max, min, showmax, disabled, input, target, maxInputLength } = this.props;
+        const { large, animated, button_style=null, max, min, showmax, disabled, input, target, maxInputLength, disableMin, disablePlus, disableInput } = this.props;
 
         if (button_style !== null) {
             console.warn('The counter is update, check al counters in this app (button_style is deprecated)')
@@ -371,7 +375,7 @@ class Counter extends Component {
 
         let theme_input_style = {}
         if (theme && theme.counter && theme.counter.input) {
-            const { backgroundColor, color, borderRadius, borderColor, borderWidth, overTargetBackgroundColor } = theme.counter.input;
+            const { backgroundColor, color, borderRadius, borderColor, borderWidth, overTargetBackgroundColor, overTargetLabelColor, onTargetBackgroundColor, onTargetLabelColor } = theme.counter.input;
 
             if (backgroundColor) { theme_input_style.backgroundColor = backgroundColor; }
             if (color) { theme_input_style.color = color; }
@@ -381,6 +385,10 @@ class Counter extends Component {
 
             if (target != null && count > target) {
                 theme_input_style.backgroundColor = overTargetBackgroundColor;
+                theme_input_style.color = overTargetLabelColor;
+            } else if (target != null && count == target) {
+                theme_input_style.backgroundColor = onTargetBackgroundColor;
+                theme_input_style.color = onTargetLabelColor;
             }
 
         }
@@ -389,7 +397,7 @@ class Counter extends Component {
             <Animated.View style={[style.container, {width: width}]} >
 
                 {
-                    !disabled
+                    !disabled && !disableMin
                     ?
                         <Animated.View style={[
                             style.btn_container,
@@ -417,10 +425,10 @@ class Counter extends Component {
                     ]}
                 >   
                     <Input 
-                        style={[
-                            style.input,
-                            theme_input_style
-                        ]} 
+                        style={{
+                            ...style.input,
+                            ...theme_input_style
+                        }} 
                         textAlign="center" 
                         keyboardType="numeric" 
                         value={String(count)} 
@@ -433,14 +441,14 @@ class Counter extends Component {
                         max={max}
                         target={target}
                         showmax={showmax}
-                        disabled={disabled}
+                        disabled={(disabled || disableInput)}
                         maxLength={maxInputLength}
                         //backgroundColor={input_background_color}
                     />
                 </Animated.View>   
 
                 {
-                    !disabled
+                    !disabled && !disablePlus
                     ?
                         <Animated.View style={[
                             style.btn_container, 
@@ -491,6 +499,10 @@ Counter.propTypes = {
     input: PropTypes.bool,
     space_between: PropTypes.number,
     maxInputLength: PropTypes.number,
+    disableMin: PropTypes.bool,
+    disablePlus: PropTypes.bool,
+    disableInput: PropTypes.bool,
+    
 }
 
 Counter.defaultProps = {
@@ -509,6 +521,9 @@ Counter.defaultProps = {
     empty_is_value: false,
     //button_style: {background:'#000000', color:'#ffffff'},
     disabled: false,
+    disableMin: false,
+    disablePlus: false,
+    disableInput: false,
     showmax: false,
     open: false,
     input: true,
@@ -540,9 +555,7 @@ const style = StyleSheet.create({
     },
 
 	input: {
-        //width: '100%',
-        //marginLeft: 14,
-        //marginRight: 14,
+
 	}
 });
 

@@ -10,7 +10,6 @@ import {
 
 import style                from "./Style";
 
-
 class Input extends Component {
 
 	constructor(props) {
@@ -89,14 +88,25 @@ class Input extends Component {
             });
         }
         
-        let input_style = [style.input];
+        let input_style = style.input;
         if (small) {
-            input_style.push(style.input_small);
+            input_style = {
+                ...input_style,
+                ...style.input_small
+            }
         }
 
         let input_text_container = [style.input_text_container];
         if (small) {
             input_text_container.push(style.input_small);
+        }
+
+        let text_style = {}
+        if (props_style.color) {
+            text_style = {
+                ...text_style,
+                color: props_style.color
+            }
         }
 
         return (
@@ -126,7 +136,7 @@ class Input extends Component {
                     :   
                         <View style={input_text_container}>
                             <View style={{minHeight: 10, paddingBottom: 6}}>
-                                <Text>{ text }</Text>
+                                <Text style={text_style}>{ text }</Text>
                             </View>
                         </View>
                 }
