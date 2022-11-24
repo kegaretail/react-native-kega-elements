@@ -42,8 +42,8 @@ class Input extends Component {
     onChangeText = (text) => {
         const { regex_allowed, formatText } = this.props;
 
-        if (regex_allowed) {
-            text = text.replace(regex_allowed, "");
+        if (regex_allowed && (regex_allowed.test(text) === false)) {
+            return false;
         }
         
         if (formatText) {
