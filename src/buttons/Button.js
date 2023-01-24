@@ -6,7 +6,6 @@ import {
   Text,
   Platform,
   StyleSheet,
-  ViewPropTypes,
   ActivityIndicator
 }                           from 'react-native';
 

@@ -6,8 +6,7 @@ import {
     TextInput,
     Text,
     StyleSheet,
-    Platform,
-    ViewPropTypes
+    Platform
 }                           from 'react-native';
 
 import { ThemeContext }     from '../Theme';
@@ -319,9 +318,9 @@ Input.propTypes = {
     multiline: PropTypes.bool,
     maxLength: PropTypes.number,
     raised: PropTypes.bool,
-    iconRightStyle: ViewPropTypes.style,
+    iconRightStyle: PropTypes.object,
     iconRight: PropTypes.element,
-    iconLeftStyle: ViewPropTypes.style,
+    iconLeftStyle: PropTypes.object,
     iconLeft: PropTypes.element,
     custom: PropTypes.string,
     formatText: PropTypes.func
