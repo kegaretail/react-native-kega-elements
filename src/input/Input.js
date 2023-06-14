@@ -93,6 +93,7 @@ class Input extends Component {
         if (onValidate !== null) {
             const { error, message='' } = onValidate(text);
             this.error(error, message);
+            return !error;
         } else {
             this.error(error);
         }
