@@ -35,6 +35,8 @@ const style = StyleSheet.create({
 		color: '#666666',
 		justifyContent: 'center',
 		alignItems: 'center',
+		fontSize: 13,
+		lineHeight: 13
 	},
 
 	input_small: {
@@ -49,6 +51,8 @@ const style = StyleSheet.create({
 		marginTop: 3,
 		justifyContent: 'center',
 		alignItems: 'center',
+		fontSize: 13,
+		lineHeight: 13
 	},
 
 	text: {
