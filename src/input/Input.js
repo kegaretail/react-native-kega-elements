@@ -115,7 +115,7 @@ class Input extends Component {
             autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, 
             editable, label, raised,
             style: props_style, multiline, maxLength = null, required, placeholderTextColor, custom, value, onChangeText,
-            iconRight, iconRightStyle, iconLeft, iconLeftStyle, onValidate
+            iconRight, iconRightStyle, iconLeft, iconLeftStyle, onValidate,
             ...restProps
         } = this.props;
 
