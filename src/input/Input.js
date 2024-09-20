@@ -86,19 +86,18 @@ class Input extends Component {
         const { required, onValidate=null } = this.props;
         const { text } = this.state;
 
-        if (!required) { return true; }
-
-        let error = (text == '');
-
         if (onValidate !== null) {
             const { error, message='' } = onValidate(text);
             this.error(error, message);
             return !error;
-        } else {
+        } else if (required) {
+            let error = (text == '');
             this.error(error);
+            return !error;
+        } else {
+            return true;
         }
 
-        return !error;
     }
 
     error = (error, message = '') => {
@@ -116,7 +115,7 @@ class Input extends Component {
             autoFocus, placeholder, selectionColor, returnKeyType, onSubmitEditing, textAlign, keyboardType, 
             editable, label, raised,
             style: props_style, multiline, maxLength = null, required, placeholderTextColor, custom, value, onChangeText,
-            iconRight, iconRightStyle, iconLeft, iconLeftStyle,
+            iconRight, iconRightStyle, iconLeft, iconLeftStyle, onValidate
             ...restProps
         } = this.props;
 
@@ -278,7 +277,7 @@ class Input extends Component {
                     { iconRight && <View style={[style.iconRight, iconRightStyle]}>{iconRight}</View> }
                 </View>
                 {
-                    required
+                    required || onValidate !== null
                     ?
                         <View style={style.error_container}>
                         {
