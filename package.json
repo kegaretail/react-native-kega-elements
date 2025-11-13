@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/kegaretail/react-native-kega-elements#readme",
   "peerDependencies": {
-    "react-native-vector-icons": "*",
-    "lodash": "*"
+    "react-native-vector-icons": "^10.x.x",
+    "lodash": "^4.x.x"
   }
 }
